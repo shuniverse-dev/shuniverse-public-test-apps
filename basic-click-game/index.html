@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Soulhouse Click Game</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="scoreboard" aria-label="Game status">
+        <div>
+          <span class="label">Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div>
+          <span class="label">Time</span>
+          <strong><span id="time">20</span>s</strong>
+        </div>
+      </section>
+
+      <section class="play-area" aria-label="Play area">
+        <button id="target" class="target" type="button" aria-label="Click target">
+          Click
+        </button>
+      </section>
+
+      <section class="controls">
+        <p id="message">Click the moving button as many times as you can.</p>
+        <button id="start" class="start-button" type="button">Start game</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

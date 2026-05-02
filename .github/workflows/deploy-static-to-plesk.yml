@@ -1,0 +1,42 @@
+name: Deploy static app to Plesk
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      app_slug:
+        description: App folder and public URL slug
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      APP_SLUG: basic-click-game
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Choose app slug
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "APP_SLUG=${{ inputs.app_slug }}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Validate static app folder
+        run: |
+          test -f "$APP_SLUG/index.html"
+
+      - name: Deploy folder to Plesk
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.PLESK_HOST }}
+          username: ${{ secrets.PLESK_USERNAME }}
+          password: ${{ secrets.PLESK_PASSWORD }}
+          port: ${{ secrets.PLESK_PORT }}
+          local-dir: ./${{ env.APP_SLUG }}/
+          server-dir: ${{ secrets.PLESK_TARGET_BASE }}/${{ env.APP_SLUG }}/

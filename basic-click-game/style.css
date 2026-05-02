@@ -1,0 +1,138 @@
+:root {
+  color-scheme: dark;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111318;
+  color: #f7f1e8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 196, 87, 0.18), transparent 28%),
+    linear-gradient(135deg, #111318 0%, #20242c 100%);
+}
+
+.game-shell {
+  width: min(680px, 100%);
+}
+
+.scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.scoreboard > div {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+  color: #bfc7d5;
+  font-size: 0.85rem;
+}
+
+.scoreboard strong {
+  font-size: 2rem;
+}
+
+.play-area {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    #171a21;
+  background-size: 32px 32px;
+}
+
+.target {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 88px;
+  height: 88px;
+  border: 0;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+  background: #ffc457;
+  color: #171a21;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(255, 196, 87, 0.35);
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.target:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.target:not(:disabled):active {
+  transform: translate(-50%, -50%) scale(0.94);
+  background: #8ee6a8;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.controls p {
+  margin: 0;
+  color: #d7deeb;
+}
+
+.start-button {
+  min-width: 128px;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: #8ee6a8;
+  color: #111318;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.start-button:hover,
+.target:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 14px;
+  }
+
+  .play-area {
+    height: 320px;
+  }
+
+  .controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .start-button {
+    width: 100%;
+  }
+}
