@@ -32,15 +32,25 @@ jobs:
           test -f "$APP_SLUG/index.html"
 
       - name: Deploy folder to Plesk
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.PLESK_HOST }}
-          username: ${{ secrets.PLESK_USERNAME }}
-          password: ${{ secrets.PLESK_PASSWORD }}
-          port: ${{ secrets.PLESK_PORT }}
-          protocol: ftps
-          security: loose
-          local-dir: ./${{ env.APP_SLUG }}/
-          server-dir: ${{ secrets.PLESK_TARGET_BASE }}/${{ env.APP_SLUG }}/
-          log-level: verbose
-          timeout: 120000
+        env:
+          FTP_HOST: ${{ secrets.PLESK_HOST }}
+          FTP_USERNAME: ${{ secrets.PLESK_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.PLESK_PASSWORD }}
+          FTP_PORT: ${{ secrets.PLESK_PORT }}
+          TARGET_BASE: ${{ secrets.PLESK_TARGET_BASE }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          cd "$APP_SLUG"
+
+          find . -type f | while read -r file; do
+            remote_file="${file#./}"
+            remote_url="ftp://${FTP_HOST}:${FTP_PORT}/${TARGET_BASE}/${APP_SLUG}/${remote_file}"
+            echo "Uploading ${remote_file}"
+            curl --fail --show-error --silent \
+              --ssl-reqd --insecure --ftp-create-dirs \
+              --user "${FTP_USERNAME}:${FTP_PASSWORD}" \
+              --upload-file "${file}" \
+              "${remote_url}"
+          done
