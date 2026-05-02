@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Choose app slug
         run: |
@@ -32,11 +32,15 @@ jobs:
           test -f "$APP_SLUG/index.html"
 
       - name: Deploy folder to Plesk
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.PLESK_HOST }}
           username: ${{ secrets.PLESK_USERNAME }}
           password: ${{ secrets.PLESK_PASSWORD }}
           port: ${{ secrets.PLESK_PORT }}
+          protocol: ftps
+          security: loose
           local-dir: ./${{ env.APP_SLUG }}/
           server-dir: ${{ secrets.PLESK_TARGET_BASE }}/${{ env.APP_SLUG }}/
+          log-level: verbose
+          timeout: 120000
