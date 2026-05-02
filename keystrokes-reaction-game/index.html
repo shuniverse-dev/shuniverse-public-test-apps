@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keystrokes Reaction Game</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game">
+      <section class="hud" aria-label="Game status">
+        <div>
+          <span>Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div>
+          <span>Round</span>
+          <strong><span id="round">0</span>/10</strong>
+        </div>
+        <div>
+          <span>Best</span>
+          <strong><span id="best">--</span> ms</strong>
+        </div>
+      </section>
+
+      <section class="stage" aria-live="polite">
+        <p class="eyebrow">Press the shown key</p>
+        <div id="prompt" class="prompt">?</div>
+        <p id="message" class="message">Press Start, then use your keyboard.</p>
+      </section>
+
+      <section class="controls">
+        <button id="start" type="button">Start</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
