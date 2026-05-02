@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Linen & Layer</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#">Linen & Layer</a>
+      <nav aria-label="Store sections">
+        <a href="#bestsellers">Bestsellers</a>
+        <a href="#materials">Materials</a>
+        <a href="#care">Care</a>
+      </nav>
+      <button id="cartButton" class="cart-button" type="button" aria-label="Cart">
+        Cart <span id="cartCount">0</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Soft bedding for slow mornings</p>
+          <h1>Blankets, sheets, and sleep layers made for everyday comfort.</h1>
+          <p>
+            Build a calmer bed with breathable cotton sheets, warm throws, and quilted blankets
+            in tones that work across seasons.
+          </p>
+          <a class="shop-link" href="#bestsellers">Shop collection</a>
+        </div>
+        <div class="hero-visual" aria-label="Folded bedding display">
+          <div class="stack stack-top"></div>
+          <div class="stack stack-middle"></div>
+          <div class="stack stack-bottom"></div>
+        </div>
+      </section>
+
+      <section class="filters" aria-label="Product filters">
+        <button class="filter is-active" type="button" data-filter="all">All</button>
+        <button class="filter" type="button" data-filter="sheets">Sheets</button>
+        <button class="filter" type="button" data-filter="blankets">Blankets</button>
+        <button class="filter" type="button" data-filter="throws">Throws</button>
+      </section>
+
+      <section id="bestsellers" class="products" aria-label="Bestselling bedding">
+        <article class="product" data-category="sheets">
+          <div class="swatch cotton"></div>
+          <p class="category">Percale sheet set</p>
+          <h2>Cloud Cotton Sheets</h2>
+          <p>Cool, crisp, and breathable for fresh-bed energy every night.</p>
+          <div class="product-footer">
+            <strong>€79</strong>
+            <button type="button" data-add> Add </button>
+          </div>
+        </article>
+
+        <article class="product" data-category="blankets">
+          <div class="swatch quilt"></div>
+          <p class="category">Quilted blanket</p>
+          <h2>Harbor Quilt</h2>
+          <p>Light padding with a soft brushed finish for year-round layering.</p>
+          <div class="product-footer">
+            <strong>€119</strong>
+            <button type="button" data-add> Add </button>
+          </div>
+        </article>
+
+        <article class="product" data-category="throws">
+          <div class="swatch moss"></div>
+          <p class="category">Woven throw</p>
+          <h2>Moss Waffle Throw</h2>
+          <p>Textured cotton weave for sofa naps, reading corners, and guest beds.</p>
+          <div class="product-footer">
+            <strong>€54</strong>
+            <button type="button" data-add> Add </button>
+          </div>
+        </article>
+
+        <article class="product" data-category="sheets">
+          <div class="swatch dusk"></div>
+          <p class="category">Sateen sheet set</p>
+          <h2>Dusk Sateen Sheets</h2>
+          <p>Smooth, slightly luminous sheets with a warmer hand feel.</p>
+          <div class="product-footer">
+            <strong>€89</strong>
+            <button type="button" data-add> Add </button>
+          </div>
+        </article>
+
+        <article class="product" data-category="blankets">
+          <div class="swatch wool"></div>
+          <p class="category">Warm blanket</p>
+          <h2>Nord Wool Blend</h2>
+          <p>A heavier layer for cold nights, finished with bound edges.</p>
+          <div class="product-footer">
+            <strong>€139</strong>
+            <button type="button" data-add> Add </button>
+          </div>
+        </article>
+
+        <article class="product" data-category="throws">
+          <div class="swatch sunrise"></div>
+          <p class="category">Soft throw</p>
+          <h2>Sunrise Knit Throw</h2>
+          <p>A relaxed knit layer with enough color to brighten the room.</p>
+          <div class="product-footer">
+            <strong>€62</strong>
+            <button type="button" data-add> Add </button>
+          </div>
+        </article>
+      </section>
+
+      <section id="materials" class="info-band">
+        <h2>Designed around touch, temperature, and easy care.</h2>
+        <div>
+          <p>Long-staple cotton keeps sheets smooth without feeling slippery.</p>
+          <p>Layerable blanket weights make the bed easy to adjust through the year.</p>
+          <p>Machine-washable pieces keep the collection practical for daily life.</p>
+        </div>
+      </section>
+
+      <section id="care" class="care">
+        <h2>Care notes</h2>
+        <p>Wash cold, tumble dry low, and skip heavy fabric softeners to keep fibers breathable.</p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

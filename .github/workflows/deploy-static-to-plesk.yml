@@ -15,7 +15,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      APP_SLUG: keystrokes-racing-game
+      APP_SLUG: bedsheets-blankets-store
 
     steps:
       - name: Check out repository
