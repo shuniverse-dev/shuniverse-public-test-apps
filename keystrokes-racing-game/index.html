@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keystrokes Racing Game</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game">
+      <section class="hud" aria-label="Race status">
+        <div>
+          <span>Distance</span>
+          <strong><span id="distance">0</span> m</strong>
+        </div>
+        <div>
+          <span>Speed</span>
+          <strong><span id="speed">1</span>x</strong>
+        </div>
+        <div>
+          <span>Best</span>
+          <strong><span id="best">0</span> m</strong>
+        </div>
+      </section>
+
+      <section class="track" aria-label="Race track">
+        <canvas id="race" width="420" height="620"></canvas>
+      </section>
+
+      <section class="controls">
+        <p id="message">Press Start, then steer with arrow keys or WASD.</p>
+        <button id="start" type="button">Start race</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

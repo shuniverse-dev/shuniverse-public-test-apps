@@ -1,0 +1,115 @@
+:root {
+  color-scheme: dark;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111316;
+  color: #f7f3ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(145deg, rgba(255, 210, 86, 0.16), transparent 30%),
+    linear-gradient(320deg, rgba(93, 202, 255, 0.16), transparent 34%),
+    #111316;
+}
+
+.game {
+  width: min(760px, 100%);
+}
+
+.hud {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.hud div {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hud span {
+  display: block;
+  margin-bottom: 4px;
+  color: #bfccda;
+  font-size: 0.84rem;
+}
+
+.hud strong {
+  font-size: clamp(1.3rem, 3.5vw, 2.1rem);
+}
+
+.track {
+  display: grid;
+  place-items: center;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 10px;
+  background: #1c2027;
+}
+
+canvas {
+  width: min(420px, 100%);
+  aspect-ratio: 420 / 620;
+  display: block;
+  border-radius: 6px;
+  background: #252a32;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.controls p {
+  margin: 0;
+  color: #dce4ef;
+}
+
+button {
+  min-width: 132px;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: #7fe3a0;
+  color: #111316;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 10px;
+  }
+
+  .hud {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+  }
+}
