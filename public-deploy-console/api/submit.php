@@ -17,12 +17,17 @@ try {
         throw new RuntimeException('Invalid deploy mode.');
     }
 
-    if (strlen($prompt) < 20) {
+    if (strlen($prompt) < 10) {
         throw new RuntimeException('Prompt is too short.');
     }
 
     if (strlen($prompt) > 5000) {
         throw new RuntimeException('Prompt is too long. Keep it under 5000 characters.');
+    }
+
+    if (!preg_match('/^PUBLIC\s+(MOBILE\s+)?DEPLOY:/i', $prompt)) {
+        $command = $deployMode === 'mobile' ? 'PUBLIC MOBILE DEPLOY:' : 'PUBLIC DEPLOY:';
+        $prompt = $command . "\n" . $prompt;
     }
 
     $requestId = gmdate('YmdHis') . '-' . bin2hex(random_bytes(4));

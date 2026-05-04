@@ -6,10 +6,8 @@ const promptElement = document.querySelector("#prompt");
 const modeInputs = document.querySelectorAll("input[name='deployMode']");
 
 let pollTimer = null;
-const standardPrompt = `PUBLIC DEPLOY:
-Create a simple keyboard jumping game where the main character is a duck.`;
-const mobilePrompt = `PUBLIC MOBILE DEPLOY:
-Create a simple tapping game optimized for mobile phones. Include large touch controls and a layout that fits a phone screen.`;
+const standardPrompt = "Create a simple keyboard jumping game where the main character is a duck.";
+const mobilePrompt = "Create a simple tapping game optimized for mobile phones. Include large touch controls and a layout that fits a phone screen.";
 
 initializeMode();
 
@@ -22,7 +20,7 @@ form.addEventListener("submit", async (event) => {
 
   const payload = {
     passcode: document.querySelector("#passcode").value,
-    prompt: promptElement.value,
+    prompt: deployPrompt(promptElement.value, selectedMode()),
     deploy_mode: selectedMode()
   };
 
@@ -127,4 +125,15 @@ function initializeMode() {
 function selectedMode() {
   const checked = document.querySelector("input[name='deployMode']:checked");
   return checked ? checked.value : "standard";
+}
+
+function deployPrompt(prompt, mode) {
+  const cleanedPrompt = prompt.trim();
+  const command = mode === "mobile" ? "PUBLIC MOBILE DEPLOY:" : "PUBLIC DEPLOY:";
+
+  if (/^PUBLIC\s+(MOBILE\s+)?DEPLOY:/i.test(cleanedPrompt)) {
+    return cleanedPrompt;
+  }
+
+  return `${command}\n${cleanedPrompt}`;
 }
