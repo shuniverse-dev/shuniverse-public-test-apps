@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cave Gem Dash</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand" aria-label="Game title">Cave Gem Dash</div>
+    <div class="hud" role="status" aria-live="polite">
+      <div class="hudItem"><span class="label">Score</span> <span id="score">0</span></div>
+      <div class="hudItem"><span class="label">Gems</span> <span id="gems">0</span>/<span id="gemsTotal">0</span></div>
+      <div class="hudItem"><span class="label">Level</span> <span id="level">1</span></div>
+      <div class="hudItem"><span class="label">Status</span> <span id="status">Playing</span></div>
+    </div>
+    <div class="controls" aria-label="Controls">
+      <button id="restartBtn" class="btn" type="button">Restart</button>
+      <button id="nextBtn" class="btn" type="button" disabled>Next</button>
+    </div>
+  </header>
+
+  <main class="main" role="main">
+    <section class="gameWrap" aria-label="Game area">
+      <canvas id="game" width="960" height="600" aria-label="Cave grid" role="img"></canvas>
+      <div class="overlay" id="overlay" hidden>
+        <div class="panel" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+          <h2 id="overlayTitle">You win!</h2>
+          <p id="overlayText">Press Next to continue or Restart to replay.</p>
+          <div class="panelBtns">
+            <button id="overlayRestart" class="btn" type="button">Restart</button>
+            <button id="overlayNext" class="btn" type="button">Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="help" aria-label="Hints">
+      <div class="helpRow">
+        <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Move
+        <span class="sep">•</span>
+        Collect gems to open the exit
+        <span class="sep">•</span>
+        Rocks fall and can crush you
+        <span class="sep">•</span>
+        <kbd>R</kbd> Restart
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
