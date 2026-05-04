@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Bunny Prix</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="hud" aria-label="Race stats">
+        <div>
+          <span class="label">Lap</span>
+          <strong id="lap">1/3</strong>
+        </div>
+        <div>
+          <span class="label">Carrots</span>
+          <strong id="carrots">0</strong>
+        </div>
+        <div>
+          <span class="label">Fans</span>
+          <strong id="fans">0</strong>
+        </div>
+      </section>
+
+      <section class="progress-wrap" aria-label="Race progress">
+        <span id="progressBar"></span>
+      </section>
+
+      <section class="track-card" aria-label="Bunny Prix race track">
+        <canvas id="game" width="390" height="620"></canvas>
+        <div id="toast" class="toast" hidden></div>
+        <div id="overlay" class="overlay">
+          <p class="eyebrow">Bunny Prix</p>
+          <h1>Rabbit Formula 1 chaos.</h1>
+          <p>Swipe lanes, tap boost, collect carrots, dodge rival cars, and impress the cheering fans.</p>
+          <button id="startButton" type="button">Start race</button>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Touch race controls">
+        <button id="leftButton" type="button" aria-label="Move left">Left</button>
+        <button id="boostButton" type="button" aria-label="Use carrot boost">Boost</button>
+        <button id="rightButton" type="button" aria-label="Move right">Right</button>
+      </section>
+
+      <section class="race-notes" aria-live="polite">
+        <strong id="message">Ready for ridiculous speed.</strong>
+        <span id="hype">Hype meter waiting for ears.</span>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
