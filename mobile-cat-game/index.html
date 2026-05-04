@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mobile Cat Tap Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app" class="app" role="application" aria-label="Black Cat tapping game">
+    <header class="topbar" aria-label="Game status">
+      <div class="brand" aria-hidden="true">
+        <span class="dot"></span>
+        <span class="title">Cat Tap</span>
+      </div>
+
+      <div class="stats" aria-label="Score and time">
+        <div class="stat" aria-label="Score">
+          <div class="statLabel">Score</div>
+          <div class="statValue" id="score">0</div>
+        </div>
+        <div class="stat" aria-label="Combo">
+          <div class="statLabel">Combo</div>
+          <div class="statValue" id="combo">x1</div>
+        </div>
+        <div class="stat" aria-label="Time left">
+          <div class="statLabel">Time</div>
+          <div class="statValue" id="time">30.0</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" aria-label="Play area">
+      <section class="playcard" aria-label="Tap area">
+        <div class="hintRow">
+          <div class="chip" id="modeChip" aria-live="polite">Ready</div>
+          <div class="chip secondary" id="bestChip" aria-live="polite">Best: 0</div>
+        </div>
+
+        <button id="catButton" class="catButton" type="button" aria-label="Tap the black cat" aria-describedby="tapDesc">
+          <div class="cat" aria-hidden="true">
+            <div class="ears">
+              <div class="ear left"></div>
+              <div class="ear right"></div>
+            </div>
+            <div class="head">
+              <div class="eyes">
+                <div class="eye left"><span class="pupil"></span></div>
+                <div class="eye right"><span class="pupil"></span></div>
+              </div>
+              <div class="nose"></div>
+              <div class="mouth"></div>
+              <div class="whiskers left">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="whiskers right">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+            <div class="body"></div>
+            <div class="tail"></div>
+          </div>
+          <div class="tapText" id="tapText">Tap!</div>
+          <div class="burst" id="burst" aria-hidden="true"></div>
+        </button>
+
+        <p class="srOnly" id="tapDesc">Tap the cat as many times as you can before time runs out. Use the big buttons below to start and pause.</p>
+
+        <div class="controls" aria-label="Controls">
+          <button id="startBtn" class="btn primary" type="button">Start (30s)</button>
+          <button id="pauseBtn" class="btn" type="button" disabled>Pause</button>
+          <button id="resetBtn" class="btn" type="button">Reset</button>
+        </div>
+
+        <div class="subControls" aria-label="Quick settings">
+          <button id="muteBtn" class="btn small" type="button" aria-pressed="false">Sound: On</button>
+          <button id="hapticsBtn" class="btn small" type="button" aria-pressed="true">Haptics: On</button>
+          <div class="seg" role="group" aria-label="Round length">
+            <button class="segBtn" type="button" data-seconds="15">15s</button>
+            <button class="segBtn isActive" type="button" data-seconds="30">30s</button>
+            <button class="segBtn" type="button" data-seconds="60">60s</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="toast" id="toast" aria-live="polite" aria-atomic="true"></section>
+    </main>
+
+    <footer class="footer" aria-label="Footer">
+      <div class="footerInner">
+        <div class="legend">
+          <span class="pill">Tip</span>
+          <span class="legendText">Fast taps build combo. Missed time resets combo.</span>
+        </div>
+        <div class="kbd" aria-hidden="true">Keyboard: Space/Enter to tap • S start • P pause</div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
