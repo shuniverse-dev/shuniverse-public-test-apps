@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Bunny GP Sprint</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#game">Skip to game</a>
+
+  <header class="topbar" role="banner">
+    <div class="brand" aria-label="Game title">
+      <span class="logo" aria-hidden="true">🐰🏎️</span>
+      <div class="titles">
+        <div class="title">Bunny GP Sprint</div>
+        <div class="subtitle">Dodge cones • Grab carrots • Survive the sprint</div>
+      </div>
+    </div>
+
+    <div class="hud" aria-label="Score and status">
+      <div class="pill" aria-live="polite">
+        <span class="pill-label">Score</span>
+        <span id="score" class="pill-value">0</span>
+      </div>
+      <div class="pill" aria-live="polite">
+        <span class="pill-label">Best</span>
+        <span id="best" class="pill-value">0</span>
+      </div>
+      <div class="pill" aria-live="polite">
+        <span class="pill-label">HP</span>
+        <span id="hp" class="pill-value">3</span>
+      </div>
+      <button id="pauseBtn" class="icon-btn" type="button" aria-pressed="false" aria-label="Pause">
+        <span aria-hidden="true">⏸</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap" role="main">
+    <section class="stage-card" aria-label="Game area">
+      <div class="stage-top">
+        <div class="meter" aria-label="Speed meter">
+          <div class="meter-label">Speed</div>
+          <div class="meter-bar" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Speed">
+            <div id="speedFill" class="meter-fill"></div>
+          </div>
+        </div>
+        <div class="stage-actions" aria-label="Quick actions">
+          <button id="restartBtn" class="btn secondary" type="button">Restart</button>
+          <button id="soundBtn" class="btn secondary" type="button" aria-pressed="true">Sound: On</button>
+        </div>
+      </div>
+
+      <div class="canvas-wrap" id="game" tabindex="-1">
+        <canvas id="c" width="540" height="960" aria-label="Bunny racing track"></canvas>
+
+        <div id="overlay" class="overlay" aria-live="polite">
+          <div class="overlay-card">
+            <div id="overlayTitle" class="overlay-title">Bunny GP Sprint</div>
+            <div id="overlayBody" class="overlay-body">Tap Start to race.</div>
+            <div class="overlay-actions">
+              <button id="startBtn" class="btn primary" type="button">Start</button>
+              <button id="howBtn" class="btn secondary" type="button" aria-expanded="false" aria-controls="howPanel">How</button>
+            </div>
+            <div id="howPanel" class="how" hidden>
+              <ul class="how-list">
+                <li><strong>Steer:</strong> Left/Right buttons (or swipe left/right).</li>
+                <li><strong>Boost:</strong> Hold Boost to go faster (uses stamina).</li>
+                <li><strong>Goal:</strong> Avoid cones, collect carrots.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+      </div>
+
+      <div class="controls" aria-label="Touch controls">
+        <div class="controls-row">
+          <button id="leftBtn" class="pad-btn" type="button" aria-label="Steer left">
+            <span class="pad-icon" aria-hidden="true">◀</span>
+            <span class="pad-text">Left</span>
+          </button>
+
+          <button id="boostBtn" class="pad-btn boost" type="button" aria-label="Boost (hold)">
+            <span class="pad-icon" aria-hidden="true">⚡</span>
+            <span class="pad-text">Boost</span>
+          </button>
+
+          <button id="rightBtn" class="pad-btn" type="button" aria-label="Steer right">
+            <span class="pad-icon" aria-hidden="true">▶</span>
+            <span class="pad-text">Right</span>
+          </button>
+        </div>
+
+        <div class="controls-row small">
+          <button id="driftBtn" class="btn tertiary" type="button" aria-label="Drift (tap)">
+            Drift
+          </button>
+          <button id="focusBtn" class="btn tertiary" type="button" aria-label="Focus game canvas">
+            Focus Game
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="info" aria-label="Game stats">
+      <div class="stat">
+        <div class="stat-label">Stamina</div>
+        <div class="stat-bar" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Stamina">
+          <div id="staminaFill" class="stat-fill"></div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Distance</div>
+        <div class="stat-value"><span id="dist">0</span> m</div>
+      </div>
+    </section>
+
+    <footer class="foot" role="contentinfo">
+      <div class="kbd-hint" aria-label="Keyboard controls">
+        Keyboard: ← → steer, Space boost, P pause
+      </div>
+      <div class="subpath-note" aria-label="Deployment note">
+        Deploy: <span class="mono">app-0005</span>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
