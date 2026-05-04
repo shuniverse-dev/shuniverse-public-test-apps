@@ -254,14 +254,57 @@ button:disabled {
   margin-top: 22px;
 }
 
-.result a {
+.result-card {
+  display: grid;
+  gap: 12px;
+  padding-top: 2px;
+}
+
+.result-label {
+  margin: 0;
+  color: #515154;
+  font-weight: 760;
+}
+
+.result-url {
+  overflow-wrap: anywhere;
+  margin: 0;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 8px;
+  padding: 12px 13px;
+  background: rgba(255, 255, 255, 0.76);
+  color: #1d1d1f;
+  line-height: 1.35;
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.result a,
+.result button {
   display: inline-block;
   border-radius: 8px;
   padding: 12px 15px;
+  min-height: 46px;
   background: #1d1d1f;
   color: #ffffff;
   font-weight: 800;
   text-decoration: none;
+  box-shadow: none;
+}
+
+.result .secondary-action {
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  background: rgba(255, 255, 255, 0.78);
+  color: #1d1d1f;
+}
+
+.result button:hover,
+.result a:hover {
+  transform: translateY(-1px);
 }
 
 @media (max-width: 860px) {
@@ -301,6 +344,7 @@ button:disabled {
   }
 
   .result a,
+  .result button,
   button {
     width: 100%;
     text-align: center;

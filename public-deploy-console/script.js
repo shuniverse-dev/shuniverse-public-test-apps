@@ -75,7 +75,7 @@ async function pollStatus(requestId, publicUrl) {
 
     if (data.conclusion === "success") {
       setSteps(["Request accepted", "GitHub Actions completed", "App deployed", "Public link ready"], 4);
-      resultElement.innerHTML = `<a href="${publicUrl}" target="_blank" rel="noopener">Open deployed app</a>`;
+      renderSuccessResult(publicUrl);
       submitButton.disabled = false;
       return;
     }
@@ -136,4 +136,88 @@ function deployPrompt(prompt, mode) {
   }
 
   return `${command}\n${cleanedPrompt}`;
+}
+
+function renderSuccessResult(publicUrl) {
+  resultElement.textContent = "";
+
+  const card = document.createElement("div");
+  card.className = "result-card";
+
+  const label = document.createElement("p");
+  label.className = "result-label";
+  label.textContent = "Published app";
+
+  const linkText = document.createElement("p");
+  linkText.className = "result-url";
+  linkText.textContent = publicUrl;
+
+  const actions = document.createElement("div");
+  actions.className = "result-actions";
+
+  const openLink = document.createElement("a");
+  openLink.href = publicUrl;
+  openLink.target = "_blank";
+  openLink.rel = "noopener";
+  openLink.textContent = "Open app";
+
+  const copyButton = document.createElement("button");
+  copyButton.type = "button";
+  copyButton.className = "secondary-action";
+  copyButton.textContent = "Copy link";
+  copyButton.addEventListener("click", async () => {
+    const copied = await copyText(publicUrl);
+    copyButton.textContent = copied ? "Copied" : "Copy failed";
+    window.setTimeout(() => {
+      copyButton.textContent = "Copy link";
+    }, 1800);
+  });
+
+  actions.append(openLink, copyButton);
+
+  if (navigator.share) {
+    const shareButton = document.createElement("button");
+    shareButton.type = "button";
+    shareButton.className = "secondary-action";
+    shareButton.textContent = "Share";
+    shareButton.addEventListener("click", async () => {
+      try {
+        await navigator.share({
+          title: "SHUNIVERSE public app",
+          text: "Open this deployed browser app.",
+          url: publicUrl
+        });
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          await copyText(publicUrl);
+        }
+      }
+    });
+    actions.appendChild(shareButton);
+  }
+
+  card.append(label, linkText, actions);
+  resultElement.appendChild(card);
+}
+
+async function copyText(value) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(value);
+      return true;
+    }
+
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand("copy");
+    textarea.remove();
+    return copied;
+  } catch (error) {
+    return false;
+  }
 }
