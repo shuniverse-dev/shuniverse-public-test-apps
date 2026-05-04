@@ -26,6 +26,7 @@ body{
     radial-gradient(900px 500px at 80% 0%, rgba(139,211,255,0.14), transparent 55%),
     radial-gradient(1000px 600px at 60% 90%, rgba(255,211,79,0.14), transparent 60%),
     linear-gradient(180deg, #070a14, #0b1020 30%, #090d1a 100%);
+  touch-action: manipulation;
 }
 
 .skip{
@@ -120,6 +121,7 @@ canvas{
   height:auto;
   display:block;
   background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.08));
+  touch-action: manipulation;
 }
 
 .overlay{
@@ -181,6 +183,27 @@ kbd{
   text-align:center;
 }
 
+.jump-button{
+  display:none;
+  width: min(420px, 100%);
+  min-height: 72px;
+  margin: 12px auto 0;
+  border: 1px solid rgba(98,210,111,0.55);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(98,210,111,0.95), rgba(52,169,75,0.95));
+  color: #07110b;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.30);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.jump-button:active{
+  transform: translateY(2px) scale(0.99);
+}
+
 .footer{
   max-width: 1200px;
   margin: 0 auto;
@@ -195,6 +218,69 @@ kbd{
   .panel{order: 2;}
   .mobile-hint{display:block;}
   .brand{min-width: unset;}
+}
+
+@media (max-width: 720px){
+  .topbar{
+    position: static;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hud{
+    justify-content: flex-start;
+  }
+
+  .controls{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn{
+    min-height: 44px;
+  }
+
+  .layout{
+    padding: 10px;
+  }
+
+  .panel{
+    display:none;
+  }
+
+  .overlay{
+    padding: 10px;
+  }
+
+  .overlay-card{
+    padding: 14px;
+  }
+
+  .overlay-card h1{
+    font-size: 20px;
+  }
+
+  .jump-button{
+    display:block;
+  }
+}
+
+@media (max-width: 420px){
+  .hud-item{
+    flex: 1 1 30%;
+    justify-content: center;
+    padding: 6px 8px;
+  }
+
+  .hud-label{
+    display:none;
+  }
+
+  .jump-button{
+    min-height: 78px;
+    font-size: 26px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce){

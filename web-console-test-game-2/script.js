@@ -18,6 +18,7 @@
   const btnPause = document.getElementById('btnPause');
   const btnRestart = document.getElementById('btnRestart');
   const btnHow = document.getElementById('btnHow');
+  const btnMobileJump = document.getElementById('btnMobileJump');
   const howPanel = document.getElementById('howPanel');
 
   // HiDPI
@@ -143,7 +144,7 @@
     btnPause.textContent = 'Pause';
     btnPause.setAttribute('aria-pressed', 'false');
 
-    setOverlay(true, 'Frog Jump', 'Press Space or ↑ to jump. Avoid logs. Collect flies.');
+    setOverlay(true, 'Frog Jump', 'Press Space, ↑, or tap Jump. Avoid logs. Collect flies.');
   }
 
   function startGame() {
@@ -735,6 +736,9 @@
   }
 
   canvas.addEventListener('pointerdown', pointerJump, { passive: false });
+  btnMobileJump.addEventListener('pointerdown', pointerJump, { passive: false });
+  btnMobileJump.addEventListener('click', (e) => e.preventDefault());
+
   overlay.addEventListener('pointerdown', (e) => {
     // Let buttons work; otherwise allow clicking overlay to jump/start.
     const target = /** @type {HTMLElement} */ (e.target);

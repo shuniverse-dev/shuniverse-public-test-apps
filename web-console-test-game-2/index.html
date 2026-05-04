@@ -35,14 +35,14 @@
         <div id="overlay" class="overlay" aria-live="polite" aria-atomic="true">
           <div class="overlay-card" role="dialog" aria-modal="false" aria-label="Game status">
             <h1 id="overlayTitle">Frog Jump</h1>
-            <p id="overlayText" class="overlay-text">Press <kbd>Space</kbd> or <kbd>↑</kbd> to jump. Avoid logs. Collect flies.</p>
+            <p id="overlayText" class="overlay-text">Press <kbd>Space</kbd>, <kbd>↑</kbd>, or tap Jump. Avoid logs. Collect flies.</p>
             <div class="overlay-actions">
               <button id="btnStart" class="btn primary" type="button">Start</button>
               <button id="btnHow" class="btn" type="button" aria-expanded="false" aria-controls="howPanel">How to play</button>
             </div>
             <div id="howPanel" class="how" hidden>
               <ul>
-                <li><strong>Jump:</strong> Space / Up Arrow (or tap/click)</li>
+                <li><strong>Jump:</strong> Space / Up Arrow / Jump button</li>
                 <li><strong>Double jump:</strong> jump again while in the air</li>
                 <li><strong>Pause:</strong> P</li>
                 <li><strong>Restart:</strong> R</li>
@@ -54,8 +54,12 @@
       </div>
 
       <div class="mobile-hint" aria-hidden="true">
-        Tap to jump • Two taps for double-jump
+        Tap Jump once or twice for a double-jump
       </div>
+
+      <button id="btnMobileJump" class="jump-button" type="button" aria-label="Jump">
+        Jump
+      </button>
     </section>
 
     <aside class="panel" aria-label="Info panel">
@@ -72,7 +76,7 @@
       <div class="panel-card">
         <h2>Goal</h2>
         <p>Survive as long as you can. Jump over rolling logs and collect flies for bonus points.</p>
-        <p class="small">Keyboard-first, but playable with mouse/touch too.</p>
+        <p class="small">Desktop: Space or Up Arrow. Mobile: tap the Jump button.</p>
       </div>
 
       <div class="panel-card">
