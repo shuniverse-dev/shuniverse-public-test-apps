@@ -15,7 +15,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      APP_SLUG: bedsheets-blankets-store
+      APP_SLUG: keyboard-duck-jump-game
 
     steps:
       - name: Check out repository

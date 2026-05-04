@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Keyboard Duck Jump</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="game">
+      <section class="hud" aria-label="Game status">
+        <div>
+          <span>Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div>
+          <span>Best</span>
+          <strong id="best">0</strong>
+        </div>
+        <div>
+          <span>Speed</span>
+          <strong><span id="speed">1.0</span>x</strong>
+        </div>
+      </section>
+
+      <section class="stage" aria-label="Duck jumping game">
+        <canvas id="gameCanvas" width="760" height="420"></canvas>
+      </section>
+
+      <section class="controls">
+        <p id="message">Press Start, then jump with Space, Arrow Up, or W.</p>
+        <button id="startButton" type="button">Start</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
