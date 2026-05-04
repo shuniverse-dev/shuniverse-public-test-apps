@@ -464,6 +464,11 @@
   function tick() {
     if (!state) return;
     if (state.ready) {
+      applyInput();
+      if (!state.ready) {
+        simulateGravity();
+        updateHud();
+      }
       draw();
       return;
     }
