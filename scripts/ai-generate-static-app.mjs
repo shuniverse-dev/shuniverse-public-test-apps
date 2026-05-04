@@ -40,6 +40,7 @@ const instructions = [
   "The app must be self-contained and must use exactly three files: index.html, style.css, script.js.",
   "Use relative file references: style.css and script.js.",
   "Do not use external CDN scripts, external images, analytics, trackers, secrets, API keys, or server calls.",
+  "Do not include Markdown fences, <script> tags inside script.js, or <style> tags inside style.css.",
   "Use accessible, responsive HTML/CSS/JS.",
   "If the request is for a game, make it immediately playable with keyboard and/or pointer controls as requested.",
   "Avoid instructions text as filler; build the actual usable experience as the first screen.",
@@ -85,7 +86,7 @@ if (!outputText) {
   throw new Error("OpenAI response did not contain output text.");
 }
 
-const files = extractFiles(outputText);
+const files = cleanFiles(extractFiles(outputText));
 
 validateFile("index.html", files["index.html"]);
 validateFile("style.css", files["style.css"]);
@@ -146,6 +147,38 @@ function extractFiles(text) {
   }
 
   return files;
+}
+
+function cleanFiles(files) {
+  return {
+    "index.html": stripMarkdownFence(files["index.html"]),
+    "style.css": stripStyleWrapper(stripMarkdownFence(files["style.css"])),
+    "script.js": stripScriptWrapper(stripMarkdownFence(files["script.js"]))
+  };
+}
+
+function stripMarkdownFence(value) {
+  let cleaned = value.trim();
+  const fenceMatch = cleaned.match(/^```(?:html|css|js|javascript)?\s*([\s\S]*?)\s*```$/i);
+  if (fenceMatch) {
+    cleaned = fenceMatch[1].trim();
+  }
+
+  return cleaned;
+}
+
+function stripStyleWrapper(value) {
+  return value
+    .replace(/^\s*<style[^>]*>\s*/i, "")
+    .replace(/\s*<\/style>\s*$/i, "")
+    .trim();
+}
+
+function stripScriptWrapper(value) {
+  return value
+    .replace(/^\s*<script[^>]*>\s*/i, "")
+    .replace(/\s*<\/script>\s*$/i, "")
+    .trim();
 }
 
 function normalize(value) {
