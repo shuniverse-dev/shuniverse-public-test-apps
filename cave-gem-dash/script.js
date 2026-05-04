@@ -12,12 +12,14 @@
   const movesEl = $('moves');
   const statusEl = $('status');
   const restartBtn = $('restartBtn');
+  const newCaveBtn = $('newCaveBtn');
   const nextBtn = $('nextBtn');
 
   const overlay = $('overlay');
   const overlayTitle = $('overlayTitle');
   const overlayText = $('overlayText');
   const overlayRestart = $('overlayRestart');
+  const overlayNewCave = $('overlayNewCave');
   const overlayNext = $('overlayNext');
 
   // Tile types
@@ -186,6 +188,75 @@
     return g.map(row => row.slice());
   }
 
+  function createProceduralLevel() {
+    const w = 28;
+    const h = 15;
+    const grid = Array.from({ length: h }, (_, y) =>
+      Array.from({ length: w }, (_, x) =>
+        x === 0 || y === 0 || x === w - 1 || y === h - 1 ? T.WALL : T.DIRT
+      )
+    );
+
+    const player = { x: 1, y: h - 2 };
+    const exit = { x: w - 2, y: 1, open: false };
+    grid[player.y][player.x] = T.EMPTY;
+    grid[exit.y][exit.x] = T.EXIT_CLOSED;
+
+    // Carve a guaranteed main path so the cave is playable, then decorate it.
+    let cx = player.x;
+    let cy = player.y;
+    while (cx !== exit.x || cy !== exit.y) {
+      grid[cy][cx] = T.EMPTY;
+      if (Math.random() < 0.58 && cx < exit.x) {
+        cx += 1;
+      } else if (cy > exit.y) {
+        cy -= 1;
+      } else if (cx < exit.x) {
+        cx += 1;
+      }
+    }
+    grid[exit.y][exit.x] = T.EXIT_CLOSED;
+
+    for (let y = 2; y < h - 2; y += 1) {
+      for (let x = 2; x < w - 2; x += 1) {
+        if (grid[y][x] !== T.DIRT) continue;
+        if (Math.random() < 0.16) grid[y][x] = T.EMPTY;
+      }
+    }
+
+    let gemsTotal = 0;
+    const place = (tile, count, minY = 1) => {
+      let placed = 0;
+      let attempts = 0;
+      while (placed < count && attempts < 1200) {
+        attempts += 1;
+        const x = 2 + Math.floor(Math.random() * (w - 4));
+        const y = minY + Math.floor(Math.random() * (h - minY - 2));
+        const farFromPlayer = Math.abs(x - player.x) + Math.abs(y - player.y) > 5;
+        const farFromExit = Math.abs(x - exit.x) + Math.abs(y - exit.y) > 2;
+        if (grid[y][x] === T.DIRT && farFromPlayer && farFromExit) {
+          grid[y][x] = tile;
+          placed += 1;
+          if (tile === T.GEM) gemsTotal += 1;
+        }
+      }
+    };
+
+    place(T.GEM, 8 + Math.floor(Math.random() * 5), 2);
+    place(T.ROCK, 14 + Math.floor(Math.random() * 8), 1);
+
+    // Keep the immediate start area fair.
+    for (let y = h - 3; y < h - 1; y += 1) {
+      for (let x = 1; x < 5; x += 1) {
+        if (grid[y][x] !== T.WALL) grid[y][x] = T.EMPTY;
+      }
+    }
+    grid[player.y][player.x] = T.EMPTY;
+    grid[exit.y][exit.x] = T.EXIT_CLOSED;
+
+    return { grid, w, h, player, exit, gemsTotal };
+  }
+
   function setStatus(text, kind = 'playing') {
     statusEl.textContent = text;
     statusEl.dataset.kind = kind;
@@ -201,11 +272,18 @@
     overlay.hidden = true;
   }
 
-  function startLevel(levelIndex, keepScore = true) {
-    const parsed = parseLevel(LEVELS[levelIndex]);
+  function startLevel(levelIndex, keepScore = true, source = null) {
+    const parsed = source ? {
+      ...source,
+      grid: cloneGrid(source.grid),
+      player: { ...source.player },
+      exit: { ...source.exit }
+    } : parseLevel(LEVELS[levelIndex]);
 
     state = {
       levelIndex,
+      procedural: Boolean(source),
+      sourceLevel: source,
       grid: parsed.grid,
       w: parsed.w,
       h: parsed.h,
@@ -232,6 +310,22 @@
     updateHud();
     fitCanvasToLevel();
     draw();
+  }
+
+  function startNewCave() {
+    startLevel(0, false, createProceduralLevel());
+    levelEl.textContent = 'New';
+    setStatus('New cave');
+  }
+
+  function restartCurrentCave() {
+    if (!state) return;
+    if (state.procedural && state.sourceLevel) {
+      startLevel(state.levelIndex, true, state.sourceLevel);
+      levelEl.textContent = 'New';
+    } else {
+      startLevel(state.levelIndex, true);
+    }
   }
 
   function updateHud() {
@@ -814,8 +908,11 @@
   }
 
   restartBtn.addEventListener('click', () => {
-    if (!state) return;
-    startLevel(state.levelIndex, true);
+    restartCurrentCave();
+  });
+
+  newCaveBtn.addEventListener('click', () => {
+    startNewCave();
   });
 
   nextBtn.addEventListener('click', () => {
@@ -823,7 +920,10 @@
   });
 
   overlayRestart.addEventListener('click', () => {
-    startLevel(state.levelIndex, true);
+    restartCurrentCave();
+  });
+  overlayNewCave.addEventListener('click', () => {
+    startNewCave();
   });
   overlayNext.addEventListener('click', () => {
     goNext();
