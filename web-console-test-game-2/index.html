@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Frog Jump</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip" href="#game">Skip to game</a>
+
+  <header class="topbar" role="banner">
+    <div class="brand" aria-label="Game title">
+      <span class="logo" aria-hidden="true">🐸</span>
+      <span class="title">Frog Jump</span>
+    </div>
+
+    <div class="hud" aria-label="Scoreboard">
+      <div class="hud-item" aria-label="Score"><span class="hud-label">Score</span><span id="score" class="hud-value">0</span></div>
+      <div class="hud-item" aria-label="Best"><span class="hud-label">Best</span><span id="best" class="hud-value">0</span></div>
+      <div class="hud-item" aria-label="Speed"><span class="hud-label">Speed</span><span id="speed" class="hud-value">1.00×</span></div>
+    </div>
+
+    <div class="controls" aria-label="Controls">
+      <button id="btnPause" class="btn" type="button" aria-pressed="false" title="Pause (P)">Pause</button>
+      <button id="btnRestart" class="btn" type="button" title="Restart (R)">Restart</button>
+    </div>
+  </header>
+
+  <main class="layout" role="main">
+    <section class="game-wrap" aria-label="Game">
+      <div class="canvas-wrap">
+        <canvas id="game" width="960" height="540" aria-label="Frog jumping game canvas" role="application"></canvas>
+        <div id="overlay" class="overlay" aria-live="polite" aria-atomic="true">
+          <div class="overlay-card" role="dialog" aria-modal="false" aria-label="Game status">
+            <h1 id="overlayTitle">Frog Jump</h1>
+            <p id="overlayText" class="overlay-text">Press <kbd>Space</kbd> or <kbd>↑</kbd> to jump. Avoid logs. Collect flies.</p>
+            <div class="overlay-actions">
+              <button id="btnStart" class="btn primary" type="button">Start</button>
+              <button id="btnHow" class="btn" type="button" aria-expanded="false" aria-controls="howPanel">How to play</button>
+            </div>
+            <div id="howPanel" class="how" hidden>
+              <ul>
+                <li><strong>Jump:</strong> Space / Up Arrow (or tap/click)</li>
+                <li><strong>Double jump:</strong> jump again while in the air</li>
+                <li><strong>Pause:</strong> P</li>
+                <li><strong>Restart:</strong> R</li>
+              </ul>
+              <p class="small">Tip: Aim for flies for bonus points and a small speed-up.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mobile-hint" aria-hidden="true">
+        Tap to jump • Two taps for double-jump
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="Info panel">
+      <div class="panel-card">
+        <h2>Controls</h2>
+        <div class="keygrid" role="list">
+          <div class="keyrow" role="listitem"><kbd>Space</kbd><span>Jump / Double jump</span></div>
+          <div class="keyrow" role="listitem"><kbd>↑</kbd><span>Jump</span></div>
+          <div class="keyrow" role="listitem"><kbd>P</kbd><span>Pause</span></div>
+          <div class="keyrow" role="listitem"><kbd>R</kbd><span>Restart</span></div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <h2>Goal</h2>
+        <p>Survive as long as you can. Jump over rolling logs and collect flies for bonus points.</p>
+        <p class="small">Keyboard-first, but playable with mouse/touch too.</p>
+      </div>
+
+      <div class="panel-card">
+        <h2>Accessibility</h2>
+        <p class="small">High-contrast visuals, reduced-motion respect, and large hit targets. Canvas includes live status via overlay and HUD.</p>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <span class="small">Local save: best score stored in your browser.</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
