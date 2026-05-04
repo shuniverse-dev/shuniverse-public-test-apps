@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Bomb Jump Run</title>
+  <meta name="description" content="A mobile-friendly jumping platform game starring a bomb emoji." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" data-subpath="app-0008">
+    <header class="topbar" aria-label="Game header">
+      <div class="brand" aria-label="Game title">
+        <span class="logo" aria-hidden="true">💣</span>
+        <span class="title">Bomb Jump Run</span>
+      </div>
+
+      <div class="hud" aria-label="Game stats">
+        <div class="pill" role="status" aria-live="polite" aria-atomic="true">
+          <span class="k">Score</span>
+          <span class="v" id="score">0</span>
+        </div>
+        <div class="pill" role="status" aria-live="polite" aria-atomic="true">
+          <span class="k">Best</span>
+          <span class="v" id="best">0</span>
+        </div>
+        <div class="pill" role="status" aria-live="polite" aria-atomic="true">
+          <span class="k">Coins</span>
+          <span class="v" id="coins">0</span>
+        </div>
+      </div>
+
+      <div class="actions" aria-label="Header actions">
+        <button class="btn btn-secondary" id="btnPause" type="button" aria-pressed="false">Pause</button>
+        <button class="btn btn-secondary" id="btnRestart" type="button">Restart</button>
+      </div>
+    </header>
+
+    <main class="main" aria-label="Game area">
+      <section class="stageWrap" aria-label="Playfield">
+        <canvas id="game" class="stage" width="720" height="420" aria-label="Game canvas" role="img"></canvas>
+
+        <div class="overlay" id="overlay" aria-hidden="false">
+          <div class="card" role="dialog" aria-modal="true" aria-labelledby="overlayTitle" aria-describedby="overlayDesc">
+            <h1 id="overlayTitle">Bomb Jump Run</h1>
+            <p id="overlayDesc" class="muted">Tap Play. Jump on platforms, grab coins, and avoid spikes.</p>
+
+            <div class="cardGrid" aria-label="Primary controls">
+              <button class="btn btn-primary" id="btnPlay" type="button">Play</button>
+              <button class="btn btn-secondary" id="btnHow" type="button" aria-expanded="false" aria-controls="howPanel">How</button>
+            </div>
+
+            <div class="how" id="howPanel" hidden>
+              <ul class="howList">
+                <li><strong>Move:</strong> Left/Right buttons (or A/D, ←/→).</li>
+                <li><strong>Jump:</strong> Jump button (or Space/↑).</li>
+                <li><strong>Goal:</strong> Stay alive, land on platforms, collect coins.</li>
+              </ul>
+            </div>
+
+            <div class="tinyRow">
+              <span class="tiny muted">Tip: Jump just before the platform edge for extra distance.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+      </section>
+
+      <section class="controls" aria-label="Touch controls">
+        <div class="dpad" role="group" aria-label="Move controls">
+          <button class="btnPad" id="btnLeft" type="button" aria-label="Move left">
+            <span aria-hidden="true">◀</span>
+          </button>
+          <button class="btnPad" id="btnRight" type="button" aria-label="Move right">
+            <span aria-hidden="true">▶</span>
+          </button>
+        </div>
+
+        <div class="actionsPad" role="group" aria-label="Action controls">
+          <button class="btnPad btnJump" id="btnJump" type="button" aria-label="Jump">
+            <span class="jumpGlyph" aria-hidden="true">⤒</span>
+            <span class="jumpText">Jump</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Game footer">
+      <div class="footerRow">
+        <div class="hint" id="hint">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="hintText">Tap Play to start</span>
+        </div>
+        <div class="footerMeta">
+          <span class="kbd" aria-hidden="true">A</span><span class="kbd" aria-hidden="true">D</span>
+          <span class="kbd" aria-hidden="true">Space</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
