@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Downhill Ski — Mobile</title>
+  <meta name="description" content="A mobile-first, first-person downhill skiing game with large touch controls." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" id="app" data-state="menu">
+    <header class="topbar" aria-label="Game header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="titlewrap">
+          <div class="title">Downhill Ski</div>
+          <div class="subtitle" id="subtitle">Tap Play to start</div>
+        </div>
+      </div>
+
+      <div class="hud" aria-label="Score and status">
+        <div class="hudItem" aria-label="Speed">
+          <span class="hudLabel">Speed</span>
+          <span class="hudValue" id="hudSpeed">0</span>
+        </div>
+        <div class="hudItem" aria-label="Distance">
+          <span class="hudLabel">Dist</span>
+          <span class="hudValue" id="hudDist">0</span>
+        </div>
+        <div class="hudItem" aria-label="Best distance">
+          <span class="hudLabel">Best</span>
+          <span class="hudValue" id="hudBest">0</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" aria-label="Game area">
+      <section class="gameCard" aria-label="First-person slope view">
+        <canvas id="game" width="720" height="1280" aria-label="Ski slope view"></canvas>
+
+        <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Game menu">
+          <div class="panel" role="document">
+            <h1 class="panelTitle" id="panelTitle">Downhill Ski</h1>
+
+            <div class="panelBody">
+              <div class="bigStatRow" aria-label="Run results">
+                <div class="bigStat">
+                  <div class="bigStatLabel">Distance</div>
+                  <div class="bigStatValue" id="runDistance">0</div>
+                </div>
+                <div class="bigStat">
+                  <div class="bigStatLabel">Best</div>
+                  <div class="bigStatValue" id="bestDistance">0</div>
+                </div>
+              </div>
+
+              <div class="hintRow" aria-label="Controls hint">
+                <div class="pill">Steer</div>
+                <div class="pill">Avoid trees & rocks</div>
+                <div class="pill">Collect gates</div>
+              </div>
+
+              <div class="actions" aria-label="Menu actions">
+                <button class="btn primary" id="btnPlay" type="button">Play</button>
+                <button class="btn" id="btnResume" type="button">Resume</button>
+                <button class="btn danger" id="btnRestart" type="button">Restart</button>
+              </div>
+
+              <div class="options" aria-label="Options">
+                <label class="toggle">
+                  <input id="optTilt" type="checkbox" />
+                  <span class="toggleBox" aria-hidden="true"></span>
+                  <span class="toggleText">Tilt steering (if supported)</span>
+                </label>
+
+                <label class="toggle">
+                  <input id="optHighContrast" type="checkbox" />
+                  <span class="toggleBox" aria-hidden="true"></span>
+                  <span class="toggleText">High contrast</span>
+                </label>
+              </div>
+
+              <div class="smallPrint" id="smallPrint">
+                Touch controls always available below. Keyboard: ← → to steer, Space to pause.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
+      </section>
+
+      <section class="controls" aria-label="Touch controls">
+        <button class="ctl left" id="ctlLeft" type="button" aria-label="Steer left">
+          <span class="ctlIcon" aria-hidden="true">◀</span>
+          <span class="ctlText">Left</span>
+        </button>
+
+        <button class="ctl pause" id="ctlPause" type="button" aria-label="Pause or resume">
+          <span class="ctlIcon" aria-hidden="true">⏯</span>
+          <span class="ctlText" id="pauseText">Pause</span>
+        </button>
+
+        <button class="ctl right" id="ctlRight" type="button" aria-label="Steer right">
+          <span class="ctlIcon" aria-hidden="true">▶</span>
+          <span class="ctlText">Right</span>
+        </button>
+      </section>
+    </main>
+
+    <footer class="footer" aria-label="Game footer">
+      <div class="footerRow">
+        <div class="meter" aria-label="Gate streak meter">
+          <div class="meterLabel">Streak</div>
+          <div class="meterTrack" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-label="Streak progress">
+            <div class="meterFill" id="streakFill"></div>
+          </div>
+          <div class="meterValue" id="streakValue">0</div>
+        </div>
+
+        <div class="footerHint" id="footerHint">
+          Keep a steady line for more speed.
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
