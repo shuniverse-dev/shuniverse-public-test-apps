@@ -23,20 +23,19 @@ if (!["standard", "mobile"].includes(deployMode)) {
   throw new Error("PUBLIC_DEPLOY_MODE must be standard or mobile.");
 }
 
-const schema = {
-  type: "object",
-  additionalProperties: false,
-  required: ["index_html", "style_css", "script_js"],
-  properties: {
-    index_html: { type: "string" },
-    style_css: { type: "string" },
-    script_js: { type: "string" }
-  }
-};
-
 const instructions = [
   "Generate a complete static browser app for deployment under a URL subpath.",
-  "Return only JSON matching the provided schema.",
+  "Return exactly three file blocks and no other commentary.",
+  "Use this exact format:",
+  "<file path=\"index.html\">",
+  "...complete HTML...",
+  "</file>",
+  "<file path=\"style.css\">",
+  "...complete CSS...",
+  "</file>",
+  "<file path=\"script.js\">",
+  "...complete JavaScript...",
+  "</file>",
   "The app must be self-contained and must use exactly three files: index.html, style.css, script.js.",
   "Use relative file references: style.css and script.js.",
   "Do not use external CDN scripts, external images, analytics, trackers, secrets, API keys, or server calls.",
@@ -61,15 +60,7 @@ const body = {
   model,
   instructions,
   input: `Create this static app:\n\n${userPrompt}\n\nDeploy mode: ${deployMode}\nDeploy slug: ${appSlug}`,
-  max_output_tokens: 12000,
-  text: {
-    format: {
-      type: "json_schema",
-      name: "static_app_files",
-      strict: true,
-      schema
-    }
-  }
+  max_output_tokens: 20000
 };
 
 const response = await fetch("https://api.openai.com/v1/responses", {
@@ -93,26 +84,21 @@ if (!outputText) {
   throw new Error("OpenAI response did not contain output text.");
 }
 
-let files;
-try {
-  files = JSON.parse(outputText);
-} catch (error) {
-  throw new Error(`Generated output was not valid JSON: ${error.message}`);
-}
+const files = extractFiles(outputText);
 
-validateFile("index_html", files.index_html);
-validateFile("style_css", files.style_css);
-validateFile("script_js", files.script_js);
+validateFile("index.html", files["index.html"]);
+validateFile("style.css", files["style.css"]);
+validateFile("script.js", files["script.js"]);
 
-if (!files.index_html.includes("style.css") || !files.index_html.includes("script.js")) {
+if (!files["index.html"].includes("style.css") || !files["index.html"].includes("script.js")) {
   throw new Error("index.html must reference style.css and script.js.");
 }
 
 const targetDir = path.resolve(appSlug);
 await mkdir(targetDir, { recursive: true });
-await writeFile(path.join(targetDir, "index.html"), normalize(files.index_html));
-await writeFile(path.join(targetDir, "style.css"), normalize(files.style_css));
-await writeFile(path.join(targetDir, "script.js"), normalize(files.script_js));
+await writeFile(path.join(targetDir, "index.html"), normalize(files["index.html"]));
+await writeFile(path.join(targetDir, "style.css"), normalize(files["style.css"]));
+await writeFile(path.join(targetDir, "script.js"), normalize(files["script.js"]));
 
 console.log(`Generated static app in ${targetDir}`);
 
@@ -132,6 +118,26 @@ function validateFile(name, value) {
   if (typeof value !== "string" || value.trim().length < 20) {
     throw new Error(`${name} must be a non-empty string.`);
   }
+}
+
+function extractFiles(text) {
+  const files = {};
+  const pattern = /<file\s+path=["']([^"']+)["']\s*>([\s\S]*?)<\/file>/g;
+  let match;
+
+  while ((match = pattern.exec(text)) !== null) {
+    const filePath = match[1].trim();
+    if (["index.html", "style.css", "script.js"].includes(filePath)) {
+      files[filePath] = match[2].trim();
+    }
+  }
+
+  const missing = ["index.html", "style.css", "script.js"].filter((filePath) => !files[filePath]);
+  if (missing.length > 0) {
+    throw new Error(`Generated output was missing file block(s): ${missing.join(", ")}`);
+  }
+
+  return files;
 }
 
 function normalize(value) {
