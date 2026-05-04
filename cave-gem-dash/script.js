@@ -52,6 +52,48 @@
     danger: '#ff5b6b'
   };
 
+  const SPRITES = {
+    sand: loadSprite('assets/sand.png', 1),
+    wall: loadSprite('assets/wall.png', 1),
+    player: loadSprite('assets/player-walk.png', 4),
+    diamond: loadSprite('assets/diamond-sparkle.png', 4),
+    boulder: loadSprite('assets/boulder-roll.png', 4),
+    exitClosed: loadSprite('assets/exit-closed.png', 1),
+    exitOpen: loadSprite('assets/exit-open.png', 4)
+  };
+
+  function loadSprite(src, frames) {
+    const image = new Image();
+    image.src = src;
+    image.addEventListener('load', () => draw());
+    return { image, frames };
+  }
+
+  function spriteReady(sprite) {
+    return sprite.image.complete && sprite.image.naturalWidth > 0;
+  }
+
+  function drawSprite(sprite, frame, x, y, size) {
+    if (!spriteReady(sprite)) return false;
+
+    const sourceWidth = sprite.image.naturalWidth / sprite.frames;
+    const sourceHeight = sprite.image.naturalHeight;
+    const index = Math.abs(frame) % sprite.frames;
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(
+      sprite.image,
+      sourceWidth * index,
+      0,
+      sourceWidth,
+      sourceHeight,
+      x,
+      y,
+      size,
+      size
+    );
+    return true;
+  }
+
   // Levels (fixed-size rectangular ASCII maps)
   // Legend: # wall, . dirt, space empty, O rock, * gem, X exit
   const LEVELS = [
@@ -470,6 +512,14 @@
 
     if (t === T.EMPTY) return;
 
+    const animFrame = Math.floor(performance.now() / 140);
+    if (t === T.WALL && drawSprite(SPRITES.wall, 0, px, py, s)) return;
+    if (t === T.DIRT && drawSprite(SPRITES.sand, 0, px, py, s)) return;
+    if (t === T.ROCK && drawSprite(SPRITES.boulder, animFrame, px, py, s)) return;
+    if (t === T.GEM && drawSprite(SPRITES.diamond, animFrame, px, py, s)) return;
+    if (t === T.EXIT_CLOSED && drawSprite(SPRITES.exitClosed, 0, px, py, s)) return;
+    if (t === T.EXIT_OPEN && drawSprite(SPRITES.exitOpen, animFrame, px, py, s)) return;
+
     if (t === T.WALL) {
       const g = ctx.createLinearGradient(px, py, px, py + s);
       g.addColorStop(0, COLORS.wall1);
@@ -584,6 +634,17 @@
     ctx.beginPath();
     ctx.ellipse(px + s*0.52, py + s*0.78, s*0.24, s*0.10, 0, 0, Math.PI*2);
     ctx.fill();
+
+    const playerFrame = state.alive ? Math.floor((state.moves + performance.now() / 220) % 4) : 0;
+    if (drawSprite(SPRITES.player, playerFrame, px, py, s)) {
+      if (!state.alive) {
+        ctx.fillStyle = 'rgba(255,91,107,.35)';
+        ctx.beginPath();
+        ctx.arc(px + s*0.5, py + s*0.52, s*0.30, 0, Math.PI*2);
+        ctx.fill();
+      }
+      return;
+    }
 
     // body
     const g = ctx.createRadialGradient(px + s*0.35, py + s*0.35, s*0.05, px + s*0.55, py + s*0.55, s*0.6);
