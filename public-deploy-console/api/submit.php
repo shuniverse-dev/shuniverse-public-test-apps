@@ -11,6 +11,11 @@ try {
 
     $slug = normalize_slug((string) ($data['slug'] ?? ''));
     $prompt = trim((string) ($data['prompt'] ?? ''));
+    $deployMode = (string) ($data['deploy_mode'] ?? 'standard');
+
+    if (!in_array($deployMode, ['standard', 'mobile'], true)) {
+        throw new RuntimeException('Invalid deploy mode.');
+    }
 
     if (strlen($prompt) < 20) {
         throw new RuntimeException('Prompt is too short.');
@@ -35,6 +40,7 @@ try {
                 'request_id' => $requestId,
                 'app_slug' => $slug,
                 'prompt' => $prompt,
+                'deploy_mode' => $deployMode,
             ],
         ]
     );
@@ -43,6 +49,7 @@ try {
         'ok' => true,
         'request_id' => $requestId,
         'slug' => $slug,
+        'deploy_mode' => $deployMode,
         'public_url' => rtrim($config['site_base_url'], '/') . "/{$slug}/",
     ]);
 } catch (Throwable $error) {

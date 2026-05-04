@@ -17,6 +17,7 @@ body {
     linear-gradient(135deg, rgba(255, 205, 83, 0.16), transparent 30%),
     linear-gradient(315deg, rgba(114, 204, 255, 0.14), transparent 34%),
     #101318;
+  touch-action: manipulation;
 }
 
 .console {
@@ -59,6 +60,12 @@ h1 {
   gap: 16px;
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
 label {
   display: grid;
   gap: 8px;
@@ -77,6 +84,10 @@ textarea {
   font: inherit;
 }
 
+input {
+  min-height: 48px;
+}
+
 textarea {
   resize: vertical;
   min-height: 190px;
@@ -91,6 +102,7 @@ button {
   color: #101318;
   font-weight: 900;
   cursor: pointer;
+  min-height: 50px;
 }
 
 button:disabled {
@@ -100,6 +112,59 @@ button:disabled {
 
 .status-panel {
   align-self: start;
+}
+
+.mode-field {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.mode-field legend {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+  color: #dce6ef;
+  font-weight: 800;
+}
+
+.mode-option {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 78px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  background: #171c24;
+  cursor: pointer;
+}
+
+.mode-option input {
+  width: 20px;
+  min-height: 20px;
+  accent-color: #ffd35e;
+}
+
+.mode-option strong,
+.mode-option small {
+  display: block;
+}
+
+.mode-option small {
+  margin-top: 4px;
+  color: #aebdca;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.mode-option:has(input:checked) {
+  border-color: rgba(255, 211, 94, 0.85);
+  background: rgba(255, 211, 94, 0.14);
 }
 
 .steps {
@@ -142,5 +207,42 @@ button:disabled {
 @media (max-width: 860px) {
   .console {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  body {
+    padding: 10px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 11vw, 3.1rem);
+  }
+
+  .form-grid,
+  .mode-field {
+    grid-template-columns: 1fr;
+  }
+
+  textarea {
+    min-height: 230px;
+  }
+
+  .status-panel {
+    position: static;
+  }
+
+  .steps {
+    padding-left: 20px;
+  }
+
+  .result a,
+  button {
+    width: 100%;
+    text-align: center;
   }
 }

@@ -16,6 +16,14 @@ on:
         description: PUBLIC DEPLOY prompt instructions
         required: true
         type: string
+      deploy_mode:
+        description: standard or mobile
+        required: false
+        default: standard
+        type: choice
+        options:
+          - standard
+          - mobile
 
 permissions:
   contents: write
@@ -26,6 +34,7 @@ jobs:
     env:
       APP_SLUG: ${{ inputs.app_slug }}
       PUBLIC_DEPLOY_PROMPT: ${{ inputs.prompt }}
+      PUBLIC_DEPLOY_MODE: ${{ inputs.deploy_mode || 'standard' }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5.2' }}
 
@@ -39,6 +48,7 @@ jobs:
           set -euo pipefail
           [[ "$APP_SLUG" =~ ^[a-z0-9-]+$ ]]
           test -n "$PUBLIC_DEPLOY_PROMPT"
+          [[ "$PUBLIC_DEPLOY_MODE" =~ ^(standard|mobile)$ ]]
 
       - name: Generate static app
         run: node scripts/ai-generate-static-app.mjs

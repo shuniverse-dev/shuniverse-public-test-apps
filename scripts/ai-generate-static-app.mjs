@@ -3,6 +3,7 @@ import path from "node:path";
 
 const appSlug = process.env.APP_SLUG;
 const userPrompt = process.env.PUBLIC_DEPLOY_PROMPT;
+const deployMode = process.env.PUBLIC_DEPLOY_MODE || "standard";
 const model = process.env.OPENAI_MODEL || "gpt-5.2";
 const apiKey = process.env.OPENAI_API_KEY;
 
@@ -16,6 +17,10 @@ if (!userPrompt || userPrompt.trim().length < 10) {
 
 if (!apiKey) {
   throw new Error("OPENAI_API_KEY is required.");
+}
+
+if (!["standard", "mobile"].includes(deployMode)) {
+  throw new Error("PUBLIC_DEPLOY_MODE must be standard or mobile.");
 }
 
 const schema = {
@@ -37,13 +42,25 @@ const instructions = [
   "Do not use external CDN scripts, external images, analytics, trackers, secrets, API keys, or server calls.",
   "Use accessible, responsive HTML/CSS/JS.",
   "If the request is for a game, make it immediately playable with keyboard and/or pointer controls as requested.",
-  "Avoid instructions text as filler; build the actual usable experience as the first screen."
+  "Avoid instructions text as filler; build the actual usable experience as the first screen.",
+  deployMode === "mobile" ? [
+    "This is PUBLIC MOBILE DEPLOY mode.",
+    "Design mobile-first for phone screens before desktop.",
+    "Use large touch targets of at least 48 CSS pixels.",
+    "Avoid hover-only interactions.",
+    "Keep primary controls visible without requiring a keyboard.",
+    "For games, provide touch/tap controls and prevent page scrolling during play where appropriate.",
+    "Make text fit within buttons and panels on narrow screens."
+  ].join(" ") : [
+    "This is PUBLIC DEPLOY mode.",
+    "Make the app responsive across desktop and mobile, but prioritize the requested interaction style."
+  ].join(" ")
 ].join("\n");
 
 const body = {
   model,
   instructions,
-  input: `Create this static app:\n\n${userPrompt}\n\nDeploy slug: ${appSlug}`,
+  input: `Create this static app:\n\n${userPrompt}\n\nDeploy mode: ${deployMode}\nDeploy slug: ${appSlug}`,
   max_output_tokens: 12000,
   text: {
     format: {

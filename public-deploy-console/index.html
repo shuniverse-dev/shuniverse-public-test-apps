@@ -15,20 +15,39 @@
         </div>
 
         <form id="deployForm" class="deploy-form">
-          <label>
-            Public path
-            <input id="slug" name="slug" type="text" placeholder="keyboard-duck-game" autocomplete="off" required>
-          </label>
+          <div class="form-grid">
+            <label>
+              Public path
+              <input id="slug" name="slug" type="text" placeholder="keyboard-duck-game" autocomplete="off" required>
+            </label>
 
-          <label>
-            Deploy passcode
-            <input id="passcode" name="passcode" type="password" autocomplete="off" required>
-          </label>
+            <label>
+              Deploy passcode
+              <input id="passcode" name="passcode" type="password" autocomplete="off" required>
+            </label>
+          </div>
+
+          <fieldset class="mode-field">
+            <legend>Deploy mode</legend>
+            <label class="mode-option">
+              <input type="radio" name="deployMode" value="standard">
+              <span>
+                <strong>PUBLIC DEPLOY</strong>
+                <small>Responsive browser app</small>
+              </span>
+            </label>
+            <label class="mode-option">
+              <input type="radio" name="deployMode" value="mobile">
+              <span>
+                <strong>PUBLIC MOBILE DEPLOY</strong>
+                <small>Phone-first layout and touch controls</small>
+              </span>
+            </label>
+          </fieldset>
 
           <label>
             Prompt
-            <textarea id="prompt" name="prompt" rows="8" required>PUBLIC DEPLOY:
-Create a simple keyboard jumping game where the main character is a duck.</textarea>
+            <textarea id="prompt" name="prompt" rows="8" required></textarea>
           </label>
 
           <button id="submitButton" type="submit">Start deployment</button>

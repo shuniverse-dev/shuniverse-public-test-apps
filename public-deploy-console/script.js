@@ -2,8 +2,16 @@ const form = document.querySelector("#deployForm");
 const submitButton = document.querySelector("#submitButton");
 const stepsElement = document.querySelector("#steps");
 const resultElement = document.querySelector("#result");
+const promptElement = document.querySelector("#prompt");
+const modeInputs = document.querySelectorAll("input[name='deployMode']");
 
 let pollTimer = null;
+const standardPrompt = `PUBLIC DEPLOY:
+Create a simple keyboard jumping game where the main character is a duck.`;
+const mobilePrompt = `PUBLIC MOBILE DEPLOY:
+Create a simple tapping game optimized for mobile phones. Include large touch controls and a layout that fits a phone screen.`;
+
+initializeMode();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -15,7 +23,8 @@ form.addEventListener("submit", async (event) => {
   const payload = {
     slug: document.querySelector("#slug").value,
     passcode: document.querySelector("#passcode").value,
-    prompt: document.querySelector("#prompt").value
+    prompt: promptElement.value,
+    deploy_mode: selectedMode()
   };
 
   try {
@@ -36,6 +45,20 @@ form.addEventListener("submit", async (event) => {
     submitButton.disabled = false;
     setSteps(["Request failed: " + error.message], 0, true);
   }
+});
+
+modeInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    if (promptElement.dataset.edited === "true") {
+      return;
+    }
+
+    promptElement.value = selectedMode() === "mobile" ? mobilePrompt : standardPrompt;
+  });
+});
+
+promptElement.addEventListener("input", () => {
+  promptElement.dataset.edited = "true";
 });
 
 async function pollStatus(requestId, publicUrl) {
@@ -88,4 +111,21 @@ function setSteps(items, currentIndex, isError = false) {
 
     stepsElement.appendChild(li);
   });
+}
+
+function initializeMode() {
+  const mobileLikely = window.matchMedia("(max-width: 720px), (pointer: coarse)").matches;
+  const defaultMode = mobileLikely ? "mobile" : "standard";
+  const defaultInput = document.querySelector(`input[name='deployMode'][value='${defaultMode}']`);
+
+  if (defaultInput) {
+    defaultInput.checked = true;
+  }
+
+  promptElement.value = defaultMode === "mobile" ? mobilePrompt : standardPrompt;
+}
+
+function selectedMode() {
+  const checked = document.querySelector("input[name='deployMode']:checked");
+  return checked ? checked.value : "standard";
 }
