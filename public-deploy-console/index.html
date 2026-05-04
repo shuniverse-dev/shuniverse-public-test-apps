@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Public Deploy Console</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="console">
+      <section class="panel">
+        <div class="heading">
+          <p class="eyebrow">Soulhouse public deploy</p>
+          <h1>Build and publish a browser app from a prompt.</h1>
+        </div>
+
+        <form id="deployForm" class="deploy-form">
+          <label>
+            Public path
+            <input id="slug" name="slug" type="text" placeholder="keyboard-duck-game" autocomplete="off" required>
+          </label>
+
+          <label>
+            Deploy passcode
+            <input id="passcode" name="passcode" type="password" autocomplete="off" required>
+          </label>
+
+          <label>
+            Prompt
+            <textarea id="prompt" name="prompt" rows="8" required>PUBLIC DEPLOY:
+Create a simple keyboard jumping game where the main character is a duck.</textarea>
+          </label>
+
+          <button id="submitButton" type="submit">Start deployment</button>
+        </form>
+      </section>
+
+      <section class="panel status-panel" aria-live="polite">
+        <p class="eyebrow">Progress</p>
+        <ol id="steps" class="steps">
+          <li class="is-current">Waiting for a request</li>
+        </ol>
+        <div id="result" class="result"></div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
