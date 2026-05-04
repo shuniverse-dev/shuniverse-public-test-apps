@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Bunny GP — Fastest Lap</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand" aria-label="Game title">
+      <span class="logo" aria-hidden="true">🐇</span>
+      <div class="brandText">
+        <div class="title">Bunny GP</div>
+        <div class="subtitle">Fastest Lap Chase</div>
+      </div>
+    </div>
+
+    <div class="hud" role="status" aria-live="polite" aria-atomic="true">
+      <div class="hudItem"><span class="k">Lap</span> <span id="hudLap" class="v">1</span></div>
+      <div class="hudItem"><span class="k">Time</span> <span id="hudTime" class="v">0:00.000</span></div>
+      <div class="hudItem"><span class="k">Best</span> <span id="hudBest" class="v">—</span></div>
+      <div class="hudItem"><span class="k">Speed</span> <span id="hudSpeed" class="v">0</span></div>
+      <div class="hudItem"><span class="k">Boost</span> <span id="hudBoost" class="v">0%</span></div>
+      <div class="hudItem"><span class="k">Hits</span> <span id="hudHits" class="v">0</span></div>
+    </div>
+
+    <div class="controls">
+      <button id="btnPause" class="btn" type="button" aria-pressed="false" title="Pause (P)">Pause</button>
+      <button id="btnRestart" class="btn secondary" type="button" title="Restart (R)">Restart</button>
+    </div>
+  </header>
+
+  <main class="layout" role="main">
+    <section class="gameWrap" aria-label="Game">
+      <div class="canvasFrame">
+        <canvas id="game" width="960" height="540" aria-label="Bunny GP game canvas" role="img"></canvas>
+
+        <div id="overlay" class="overlay" aria-hidden="false">
+          <div class="panel" role="dialog" aria-modal="true" aria-labelledby="overlayTitle" aria-describedby="overlayDesc">
+            <h1 id="overlayTitle">Bunny GP</h1>
+            <p id="overlayDesc">
+              Arrow keys to steer. Dodge rivals. Collect boosts. Complete laps fast.
+            </p>
+            <div class="panelRow">
+              <button id="btnPlay" class="btn primary" type="button">Play</button>
+              <button id="btnHow" class="btn secondary" type="button" aria-expanded="false" aria-controls="howBox">How to play</button>
+            </div>
+            <div id="howBox" class="how" hidden>
+              <ul>
+                <li><strong>Arrow keys</strong>: steer left/right/up/down (smooth handling).</li>
+                <li><strong>Boost pads</strong>: pick up carrots to fill boost, then auto-boost triggers briefly.</li>
+                <li><strong>Rivals</strong>: touching them adds a time penalty and slows you down.</li>
+                <li><strong>Laps</strong>: cross the start line to finish a lap; best lap is saved in this browser.</li>
+                <li><strong>P</strong> pause, <strong>R</strong> restart.</li>
+              </ul>
+            </div>
+            <div class="hint" aria-hidden="true">Tip: Light steering at high speed keeps your line clean.</div>
+          </div>
+        </div>
+
+        <div class="srOnly" aria-live="polite" aria-atomic="true" id="srAnnounce"></div>
+      </div>
+      <div class="legend" aria-label="Legend">
+        <div class="chip"><span class="swatch rabbit" aria-hidden="true"></span> You (bunny car)</div>
+        <div class="chip"><span class="swatch rival" aria-hidden="true"></span> Rival cars</div>
+        <div class="chip"><span class="swatch boost" aria-hidden="true"></span> Carrot boosts</div>
+        <div class="chip"><span class="swatch line" aria-hidden="true"></span> Start/finish line</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footerLeft">
+      <span class="kbd">←</span><span class="kbd">↑</span><span class="kbd">→</span><span class="kbd">↓</span>
+      <span class="sep" aria-hidden="true">•</span>
+      <span class="kbd">P</span> pause
+      <span class="sep" aria-hidden="true">•</span>
+      <span class="kbd">R</span> restart
+    </div>
+    <div class="footerRight">
+      <span class="subpathNote" title="Built for subpath deployments">Static • No network calls</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
