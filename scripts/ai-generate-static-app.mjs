@@ -26,6 +26,7 @@ if (!["standard", "mobile"].includes(deployMode)) {
 const instructions = [
   "Generate a complete static browser app for deployment under a URL subpath.",
   "Return exactly three file blocks and no other commentary.",
+  "Even if the page does not need JavaScript, still return script.js with a short harmless script.",
   "Use this exact format:",
   "<file path=\"index.html\">",
   "...complete HTML...",
@@ -132,7 +133,14 @@ function extractFiles(text) {
     }
   }
 
-  const missing = ["index.html", "style.css", "script.js"].filter((filePath) => !files[filePath]);
+  if (!files["script.js"]) {
+    files["script.js"] = [
+      "document.documentElement.dataset.ready = 'true';",
+      "console.log('Static app ready');"
+    ].join("\n");
+  }
+
+  const missing = ["index.html", "style.css"].filter((filePath) => !files[filePath]);
   if (missing.length > 0) {
     throw new Error(`Generated output was missing file block(s): ${missing.join(", ")}`);
   }
