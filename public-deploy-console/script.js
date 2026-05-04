@@ -6,8 +6,8 @@ const promptElement = document.querySelector("#prompt");
 const modeInputs = document.querySelectorAll("input[name='deployMode']");
 
 let pollTimer = null;
-const standardPrompt = "Create a simple keyboard jumping game where the main character is a duck.";
-const mobilePrompt = "Create a simple tapping game optimized for mobile phones. Include large touch controls and a layout that fits a phone screen.";
+const standardPrompt = "Create a simple desktop browser game controlled with keyboard arrow keys. The game features a cute rabbit racing in a Formula 1 car, dodging rivals, collecting speed boosts, and chasing the fastest lap.";
+const mobilePrompt = "Create a simple mobile-optimized game with large touch controls and a phone-friendly layout. The game features a cute rabbit racing in a Formula 1 car.";
 
 initializeMode();
 
