@@ -61,6 +61,36 @@ function normalize_slug(string $value): string
     return $value;
 }
 
+function allocate_app_slug(): string
+{
+    $path = __DIR__ . '/app-counter.txt';
+    $handle = fopen($path, 'c+');
+    if ($handle === false) {
+        throw new RuntimeException('Unable to open app counter.');
+    }
+
+    try {
+        if (!flock($handle, LOCK_EX)) {
+            throw new RuntimeException('Unable to lock app counter.');
+        }
+
+        rewind($handle);
+        $raw = stream_get_contents($handle);
+        $current = is_string($raw) && trim($raw) !== '' ? (int) trim($raw) : 0;
+        $next = $current + 1;
+
+        ftruncate($handle, 0);
+        rewind($handle);
+        fwrite($handle, (string) $next);
+        fflush($handle);
+        flock($handle, LOCK_UN);
+
+        return 'app-' . str_pad((string) $next, 4, '0', STR_PAD_LEFT);
+    } finally {
+        fclose($handle);
+    }
+}
+
 function github_request(array $config, string $method, string $path, ?array $payload = null): array
 {
     $url = "https://api.github.com{$path}";

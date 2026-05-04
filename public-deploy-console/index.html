@@ -15,17 +15,12 @@
         </div>
 
         <form id="deployForm" class="deploy-form">
-          <div class="form-grid">
-            <label>
-              Public path
-              <input id="slug" name="slug" type="text" placeholder="keyboard-duck-game" autocomplete="off" required>
-            </label>
+          <label>
+            Deploy passcode
+            <input id="passcode" name="passcode" type="password" autocomplete="off" required>
+          </label>
 
-            <label>
-              Deploy passcode
-              <input id="passcode" name="passcode" type="password" autocomplete="off" required>
-            </label>
-          </div>
+          <p class="auto-path">The public address is assigned automatically after deployment.</p>
 
           <fieldset class="mode-field">
             <legend>Deploy mode</legend>

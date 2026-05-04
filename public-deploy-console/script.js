@@ -21,7 +21,6 @@ form.addEventListener("submit", async (event) => {
   setSteps(["Submitting request"], 0);
 
   const payload = {
-    slug: document.querySelector("#slug").value,
     passcode: document.querySelector("#passcode").value,
     prompt: promptElement.value,
     deploy_mode: selectedMode()

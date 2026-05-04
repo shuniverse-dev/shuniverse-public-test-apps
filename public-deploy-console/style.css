@@ -66,6 +66,12 @@ h1 {
   gap: 14px;
 }
 
+.auto-path {
+  margin: -2px 0 2px;
+  color: #aebdca;
+  line-height: 1.45;
+}
+
 label {
   display: grid;
   gap: 8px;

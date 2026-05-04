@@ -9,7 +9,7 @@ try {
         json_response(['ok' => false, 'error' => 'Invalid passcode.'], 403);
     }
 
-    $slug = normalize_slug((string) ($data['slug'] ?? ''));
+    $slug = allocate_app_slug();
     $prompt = trim((string) ($data['prompt'] ?? ''));
     $deployMode = (string) ($data['deploy_mode'] ?? 'standard');
 
