@@ -9,6 +9,7 @@
   const gemsEl = $('gems');
   const gemsTotalEl = $('gemsTotal');
   const levelEl = $('level');
+  const movesEl = $('moves');
   const statusEl = $('status');
   const restartBtn = $('restartBtn');
   const nextBtn = $('nextBtn');
@@ -170,6 +171,7 @@
       exit: { ...parsed.exit },
       gemsTotal: parsed.gemsTotal,
       gems: 0,
+      moves: 0,
       score: keepScore && state ? state.score : 0,
       alive: true,
       won: false,
@@ -192,6 +194,7 @@
     scoreEl.textContent = String(state.score);
     gemsEl.textContent = String(state.gems);
     gemsTotalEl.textContent = String(state.gemsTotal);
+    movesEl.textContent = String(state.moves);
   }
 
   function inBounds(x, y) {
@@ -237,6 +240,7 @@
         setTile(nx, ny, T.EMPTY);
         state.player.x = nx;
         state.player.y = ny;
+        state.moves += 1;
         state.score += 1; // small movement/push reward
         state.lastMoveDir = { x: dx, y: dy };
       }
@@ -269,6 +273,7 @@
     setTile(nx, ny, T.EMPTY);
     state.player.x = nx;
     state.player.y = ny;
+    state.moves += 1;
     state.lastMoveDir = { x: dx, y: dy };
   }
 
@@ -643,6 +648,14 @@
     ['ArrowDown', { dx: 0, dy: 1 }],
     ['ArrowLeft', { dx: -1, dy: 0 }],
     ['ArrowRight', { dx: 1, dy: 0 }],
+    ['w', { dx: 0, dy: -1 }],
+    ['s', { dx: 0, dy: 1 }],
+    ['a', { dx: -1, dy: 0 }],
+    ['d', { dx: 1, dy: 0 }],
+    ['W', { dx: 0, dy: -1 }],
+    ['S', { dx: 0, dy: 1 }],
+    ['A', { dx: -1, dy: 0 }],
+    ['D', { dx: 1, dy: 0 }],
   ]);
 
   function enqueueMove(dx, dy) {
@@ -678,6 +691,24 @@
       enqueueMove(dir.dx, dir.dy);
     }
   }, { passive: false });
+
+  document.querySelectorAll('[data-move]').forEach((button) => {
+    button.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      if (!state || !overlay.hidden) return;
+
+      const move = button.getAttribute('data-move');
+      const dirs = {
+        up: { dx: 0, dy: -1 },
+        down: { dx: 0, dy: 1 },
+        left: { dx: -1, dy: 0 },
+        right: { dx: 1, dy: 0 }
+      };
+      const dir = dirs[move];
+
+      if (dir) enqueueMove(dir.dx, dir.dy);
+    }, { passive: false });
+  });
 
   // Buttons
   function goNext() {

@@ -130,6 +130,7 @@ kbd{
   background: rgba(0,0,0,.55);
   border-radius:16px;
 }
+.overlay[hidden]{display:none}
 .panel{
   width:min(520px, 92%);
   background: rgba(16,24,38,.92);
@@ -141,6 +142,48 @@ kbd{
 .panel p{margin:0 0 12px; color:var(--muted)}
 .panelBtns{display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap}
 
+.dpad{
+  display:none;
+  grid-template-columns: repeat(3, minmax(72px, 1fr));
+  grid-template-areas:
+    ". up ."
+    "left down right";
+  gap:10px;
+  width:min(420px, 100%);
+  margin: 4px auto 0;
+  touch-action: manipulation;
+}
+.dpadBtn{
+  min-height:64px;
+  border:1px solid rgba(105,227,255,.32);
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(105,227,255,.22), rgba(105,227,255,.08));
+  color:var(--text);
+  font-size:28px;
+  font-weight:900;
+  cursor:pointer;
+  touch-action: manipulation;
+}
+.dpadBtn:active{transform:translateY(2px); border-color:rgba(105,227,255,.72)}
+.dpadBtn.up{grid-area:up}
+.dpadBtn.left{grid-area:left}
+.dpadBtn.down{grid-area:down}
+.dpadBtn.right{grid-area:right}
+
 @media (max-width:560px){
-  .hudItem{min-width:98px}
+  body{touch-action:manipulation}
+  .topbar{
+    position:static;
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .hud{justify-content:flex-start}
+  .hudItem{min-width:92px; flex:1 1 30%; padding:6px 8px}
+  .controls{display:grid; grid-template-columns:1fr 1fr}
+  .btn{min-height:46px}
+  .main{padding:8px}
+  .help{font-size:13px}
+  .dpad{display:grid}
+  .panelBtns .btn{width:100%}
+  .panel h2{font-size:22px}
 }
