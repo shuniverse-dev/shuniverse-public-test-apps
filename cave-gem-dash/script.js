@@ -178,7 +178,8 @@
       lastMoveDir: { x: 0, y: 1 },
       inputQueue: [],
       // For rock-fall killing: mark which rocks moved this tick
-      movedThisTick: new Set()
+      movedThisTick: new Set(),
+      fallingObjects: new Set()
     };
 
     levelEl.textContent = String(levelIndex + 1);
@@ -312,6 +313,8 @@
   }
 
   function simulateGravity() {
+    const fallingAtStart = state.fallingObjects;
+    const fallingNext = new Set();
     state.movedThisTick.clear();
 
     // Iterate bottom-up so objects fall one step per tick.
@@ -327,14 +330,20 @@
         const below = tileAt(x, y + 1);
         const px = state.player.x;
         const py = state.player.y;
+        const wasFalling = fallingAtStart.has(key);
 
         const canFallInto = (tt) => tt === T.EMPTY;
+        const playerAt = (tx, ty) => px === tx && py === ty;
 
         // Direct fall
         if (canFallInto(below)) {
-          // If falling into player's cell (player is in empty only, but check anyway)
-          if (px === x && py === y + 1) {
-            // Falling object would occupy player
+          if (playerAt(x, y + 1)) {
+            // The player blocks resting objects. Only an object already falling
+            // from the previous tick can crush the player.
+            if (!wasFalling) {
+              continue;
+            }
+
             setTile(x, y, T.EMPTY);
             setTile(x, y + 1, t);
             die('A falling ' + (t === T.ROCK ? 'rock' : 'gem') + ' crushed you');
@@ -343,6 +352,7 @@
           setTile(x, y, T.EMPTY);
           setTile(x, y + 1, t);
           state.movedThisTick.add((y + 1) * state.w + x);
+          fallingNext.add((y + 1) * state.w + x);
           continue;
         }
 
@@ -352,8 +362,11 @@
           const downLeft = tileAt(x - 1, y + 1);
           if (left === T.EMPTY && downLeft === T.EMPTY) {
             // slide left
-            if (px === x - 1 && py === y) {
-              // player stands where it slides into; immediate crush
+            if (playerAt(x - 1, y)) {
+              if (!wasFalling) {
+                continue;
+              }
+
               setTile(x, y, T.EMPTY);
               setTile(x - 1, y, t);
               die('A rolling ' + (t === T.ROCK ? 'rock' : 'gem') + ' crushed you');
@@ -362,12 +375,17 @@
             setTile(x, y, T.EMPTY);
             setTile(x - 1, y, t);
             state.movedThisTick.add(y * state.w + (x - 1));
+            fallingNext.add(y * state.w + (x - 1));
             continue;
           }
           const right = tileAt(x + 1, y);
           const downRight = tileAt(x + 1, y + 1);
           if (right === T.EMPTY && downRight === T.EMPTY) {
-            if (px === x + 1 && py === y) {
+            if (playerAt(x + 1, y)) {
+              if (!wasFalling) {
+                continue;
+              }
+
               setTile(x, y, T.EMPTY);
               setTile(x + 1, y, t);
               die('A rolling ' + (t === T.ROCK ? 'rock' : 'gem') + ' crushed you');
@@ -376,14 +394,16 @@
             setTile(x, y, T.EMPTY);
             setTile(x + 1, y, t);
             state.movedThisTick.add(y * state.w + (x + 1));
+            fallingNext.add(y * state.w + (x + 1));
             continue;
           }
         }
 
-        // Crush player if object is directly above and player is in place and object is "unstable"?
-        // In this simplified model, only moving objects can kill.
+        // Resting rocks and gems are blocked by the player.
       }
     }
+
+    state.fallingObjects = fallingNext;
   }
 
   function applyInput() {
