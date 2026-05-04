@@ -215,6 +215,7 @@
       gems: 0,
       moves: 0,
       score: keepScore && state ? state.score : 0,
+      ready: true,
       alive: true,
       won: false,
       lastMoveDir: { x: 0, y: 1 },
@@ -226,7 +227,7 @@
 
     levelEl.textContent = String(levelIndex + 1);
     nextBtn.disabled = true;
-    setStatus('Playing');
+    setStatus('Ready');
     hideOverlay();
     updateHud();
     fitCanvasToLevel();
@@ -264,6 +265,11 @@
 
   function tryMovePlayer(dx, dy) {
     if (!state.alive || state.won) return;
+
+    if (state.ready) {
+      state.ready = false;
+      setStatus('Playing');
+    }
 
     const px = state.player.x;
     const py = state.player.y;
@@ -457,6 +463,10 @@
 
   function tick() {
     if (!state) return;
+    if (state.ready) {
+      draw();
+      return;
+    }
     if (state.won) {
       draw();
       return;
