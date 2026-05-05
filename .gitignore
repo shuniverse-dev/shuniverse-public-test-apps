@@ -1,2 +1,3 @@
 public-deploy-console/api/config.local.php
 public-deploy-console/api/app-counter.txt
+public-deploy-console/api/deploy-history.json

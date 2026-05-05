@@ -22,10 +22,22 @@ try {
     foreach (($runs['workflow_runs'] ?? []) as $run) {
         $title = (string) ($run['display_title'] ?? '');
         if (strpos($title, $requestId) !== false) {
+            $status = $run['status'] ?? 'unknown';
+            $conclusion = $run['conclusion'] ?? null;
+            $historyStatus = $status;
+            if ($status === 'completed') {
+                $historyStatus = $conclusion === 'success' ? 'success' : 'failure';
+            }
+            update_history_entry($requestId, [
+                'status' => $historyStatus,
+                'updated_at' => gmdate('c'),
+                'run_url' => $run['html_url'] ?? null,
+            ]);
+
             json_response([
                 'ok' => true,
-                'status' => $run['status'] ?? 'unknown',
-                'conclusion' => $run['conclusion'] ?? null,
+                'status' => $status,
+                'conclusion' => $conclusion,
                 'run_url' => $run['html_url'] ?? null,
             ]);
         }

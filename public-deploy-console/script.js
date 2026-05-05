@@ -4,12 +4,17 @@ const stepsElement = document.querySelector("#steps");
 const resultElement = document.querySelector("#result");
 const promptElement = document.querySelector("#prompt");
 const modeInputs = document.querySelectorAll("input[name='deployMode']");
+const historyList = document.querySelector("#historyList");
+const refreshHistoryButton = document.querySelector("#refreshHistory");
 
 let pollTimer = null;
 const standardPrompt = "Create a simple desktop browser game controlled with keyboard arrow keys. The game features a cute rabbit racing in a Formula 1 car, dodging rivals, collecting speed boosts, and chasing the fastest lap.";
 const mobilePrompt = "Create a simple mobile-optimized game with large touch controls and a phone-friendly layout. The game features a cute rabbit racing in a Formula 1 car.";
 
 initializeMode();
+loadHistory();
+
+refreshHistoryButton.addEventListener("click", loadHistory);
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -37,6 +42,7 @@ form.addEventListener("submit", async (event) => {
     }
 
     setSteps(["Request accepted", "Waiting for GitHub Actions", "Generating app", "Deploying to Plesk"], 1);
+    loadHistory();
     pollStatus(data.request_id, data.public_url);
   } catch (error) {
     submitButton.disabled = false;
@@ -69,6 +75,7 @@ async function pollStatus(requestId, publicUrl) {
 
     if (data.status === "queued" || data.status === "in_progress" || data.status === "waiting") {
       setSteps(["Request accepted", "GitHub Actions started", "Working", "Waiting for final result"], 2);
+      loadHistory();
       pollTimer = window.setTimeout(() => pollStatus(requestId, publicUrl), 5000);
       return;
     }
@@ -76,6 +83,7 @@ async function pollStatus(requestId, publicUrl) {
     if (data.conclusion === "success") {
       setSteps(["Request accepted", "GitHub Actions completed", "App deployed", "Public link ready"], 4);
       renderSuccessResult(publicUrl);
+      loadHistory();
       submitButton.disabled = false;
       return;
     }
@@ -84,6 +92,7 @@ async function pollStatus(requestId, publicUrl) {
     if (data.run_url) {
       resultElement.innerHTML = `<a href="${data.run_url}" target="_blank" rel="noopener">Open failed run</a>`;
     }
+    loadHistory();
     submitButton.disabled = false;
   } catch (error) {
     setSteps(["Status check failed: " + error.message], 0, true);
@@ -136,6 +145,126 @@ function deployPrompt(prompt, mode) {
   }
 
   return `${command}\n${cleanedPrompt}`;
+}
+
+async function loadHistory() {
+  try {
+    const response = await fetch("api/history.php", { cache: "no-store" });
+    const data = await response.json();
+
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || "History unavailable.");
+    }
+
+    renderHistory(data.items || []);
+  } catch (error) {
+    historyList.innerHTML = `<p class="muted">History could not load.</p>`;
+  }
+}
+
+function renderHistory(items) {
+  historyList.textContent = "";
+
+  if (items.length === 0) {
+    historyList.innerHTML = `<p class="muted">No creations yet. Your next deployed app will appear here.</p>`;
+    return;
+  }
+
+  for (const item of items) {
+    const card = document.createElement("article");
+    card.className = "history-item";
+
+    const meta = document.createElement("div");
+    meta.className = "history-meta";
+
+    const title = document.createElement("h2");
+    title.textContent = item.label || item.slug;
+
+    const details = document.createElement("p");
+    details.textContent = `${modeLabel(item.mode)} · ${statusLabel(item.status)} · ${dateLabel(item.created_at)}`;
+
+    const url = document.createElement("p");
+    url.className = "history-url";
+    url.textContent = item.url;
+
+    meta.append(title, details, url);
+
+    const actions = document.createElement("div");
+    actions.className = "history-actions";
+
+    const open = document.createElement("a");
+    open.href = item.url;
+    open.target = "_blank";
+    open.rel = "noopener";
+    open.textContent = "Open";
+
+    const copy = document.createElement("button");
+    copy.type = "button";
+    copy.textContent = "Copy";
+    copy.addEventListener("click", async () => {
+      const copied = await copyText(item.url);
+      copy.textContent = copied ? "Copied" : "Failed";
+      window.setTimeout(() => {
+        copy.textContent = "Copy";
+      }, 1600);
+    });
+
+    actions.append(open, copy);
+
+    if (navigator.share && item.status === "success") {
+      const share = document.createElement("button");
+      share.type = "button";
+      share.textContent = "Share";
+      share.addEventListener("click", async () => {
+        try {
+          await navigator.share({
+            title: item.label || "SHUNIVERSE public app",
+            text: "Open this SHUNIVERSE public app.",
+            url: item.url
+          });
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            await copyText(item.url);
+          }
+        }
+      });
+      actions.appendChild(share);
+    }
+
+    card.append(meta, actions);
+    historyList.appendChild(card);
+  }
+}
+
+function modeLabel(mode) {
+  return mode === "mobile" ? "Mobile" : "Desktop";
+}
+
+function statusLabel(status) {
+  if (status === "success") {
+    return "Live";
+  }
+  if (status === "failure") {
+    return "Failed";
+  }
+  if (status === "in_progress" || status === "queued" || status === "waiting") {
+    return "Building";
+  }
+  return "Pending";
+}
+
+function dateLabel(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  return date.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
 }
 
 function renderSuccessResult(publicUrl) {

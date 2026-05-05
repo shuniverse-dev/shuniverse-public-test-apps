@@ -91,6 +91,69 @@ function allocate_app_slug(): string
     }
 }
 
+function history_path(): string
+{
+    return __DIR__ . '/deploy-history.json';
+}
+
+function read_history(): array
+{
+    $path = history_path();
+    if (!is_file($path)) {
+        return [];
+    }
+
+    $raw = file_get_contents($path);
+    $decoded = json_decode(is_string($raw) ? $raw : '', true);
+    return is_array($decoded) ? $decoded : [];
+}
+
+function write_history(array $items): void
+{
+    $items = array_slice(array_values($items), 0, 50);
+    $json = json_encode($items, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    if ($json === false || file_put_contents(history_path(), $json . "\n", LOCK_EX) === false) {
+        throw new RuntimeException('Unable to write deployment history.');
+    }
+}
+
+function prompt_label(string $prompt): string
+{
+    $prompt = preg_replace('/^PUBLIC\s+(MOBILE\s+)?DEPLOY:\s*/i', '', trim($prompt));
+    $prompt = preg_replace('/\s+/', ' ', (string) $prompt);
+    if (strlen($prompt) <= 86) {
+        return $prompt;
+    }
+
+    return rtrim(substr($prompt, 0, 83)) . '...';
+}
+
+function add_history_entry(array $entry): void
+{
+    $history = read_history();
+    array_unshift($history, $entry);
+    write_history($history);
+}
+
+function update_history_entry(string $requestId, array $updates): void
+{
+    $history = read_history();
+    $changed = false;
+
+    foreach ($history as &$entry) {
+        if (($entry['request_id'] ?? '') === $requestId) {
+            $entry = array_merge($entry, $updates);
+            $changed = true;
+            break;
+        }
+    }
+    unset($entry);
+
+    if ($changed) {
+        write_history($history);
+    }
+}
+
 function github_request(array $config, string $method, string $path, ?array $payload = null): array
 {
     $url = "https://api.github.com{$path}";

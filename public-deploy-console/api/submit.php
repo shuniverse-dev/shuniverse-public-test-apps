@@ -31,6 +31,7 @@ try {
     }
 
     $requestId = gmdate('YmdHis') . '-' . bin2hex(random_bytes(4));
+    $publicUrl = rtrim($config['site_base_url'], '/') . "/{$slug}/";
     $owner = rawurlencode($config['github_owner']);
     $repo = rawurlencode($config['github_repo']);
     $workflow = rawurlencode($config['github_workflow']);
@@ -50,12 +51,24 @@ try {
         ]
     );
 
+    add_history_entry([
+        'request_id' => $requestId,
+        'slug' => $slug,
+        'url' => $publicUrl,
+        'mode' => $deployMode,
+        'label' => prompt_label($prompt),
+        'status' => 'queued',
+        'created_at' => gmdate('c'),
+        'updated_at' => gmdate('c'),
+        'run_url' => null,
+    ]);
+
     json_response([
         'ok' => true,
         'request_id' => $requestId,
         'slug' => $slug,
         'deploy_mode' => $deployMode,
-        'public_url' => rtrim($config['site_base_url'], '/') . "/{$slug}/",
+        'public_url' => $publicUrl,
     ]);
 } catch (Throwable $error) {
     json_response(['ok' => false, 'error' => $error->getMessage()], 500);

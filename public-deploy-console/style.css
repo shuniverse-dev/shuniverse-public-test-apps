@@ -166,6 +166,31 @@ button:disabled {
   top: 24px;
 }
 
+.history-panel {
+  grid-column: 1 / -1;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.section-heading .eyebrow {
+  margin: 0;
+}
+
+.icon-action {
+  min-height: 40px;
+  padding: 9px 13px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.74);
+  color: #1d1d1f;
+  box-shadow: none;
+}
+
 .mode-field {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -307,6 +332,79 @@ button:disabled {
   transform: translateY(-1px);
 }
 
+.history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.muted {
+  margin: 0;
+  color: #6e6e73;
+  line-height: 1.45;
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.history-meta {
+  min-width: 0;
+}
+
+.history-item h2 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  margin: 0;
+  color: #1d1d1f;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.history-item p {
+  margin: 6px 0 0;
+  color: #6e6e73;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.history-url {
+  overflow-wrap: anywhere;
+}
+
+.history-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.history-actions a,
+.history-actions button {
+  min-height: 42px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #1d1d1f;
+  color: #ffffff;
+  box-shadow: none;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.history-actions button {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.8);
+  color: #1d1d1f;
+}
+
 @media (max-width: 860px) {
   .console {
     grid-template-columns: 1fr;
@@ -345,8 +443,18 @@ button:disabled {
 
   .result a,
   .result button,
+  .history-actions a,
+  .history-actions button,
   button {
     width: 100%;
     text-align: center;
+  }
+
+  .history-item {
+    grid-template-columns: 1fr;
+  }
+
+  .history-actions {
+    justify-content: stretch;
   }
 }
