@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crystal Cavern: First Escape</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">Dig, Dodge, Collect, Escape.</p>
+        <h1>Crystal Cavern: First Escape</h1>
+        <p>One handcrafted cave. Eight crystals. One glowing way out.</p>
+      </header>
+
+      <section class="game-card">
+        <aside class="hud" aria-label="Game status">
+          <div>
+            <span>Crystals</span>
+            <strong id="crystalHud">0 / 8</strong>
+          </div>
+          <div>
+            <span>Exit</span>
+            <strong id="exitHud">Locked</strong>
+          </div>
+          <div>
+            <span>Status</span>
+            <strong id="stateHud">Ready</strong>
+          </div>
+        </aside>
+
+        <section class="board-wrap" aria-label="Cave board">
+          <div id="board" class="board"></div>
+          <div id="overlay" class="overlay">
+            <div>
+              <p class="eyebrow">Start</p>
+              <h2 id="overlayTitle">Crystal Cavern: First Escape</h2>
+              <p id="overlayText">Dig through dirt, collect 8 crystals, avoid falling rocks and the cave bug, then escape through the exit.</p>
+              <button id="startButton" type="button">Start game</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="side-panel">
+          <button id="restartButton" type="button">Restart</button>
+          <p id="message" class="message">Press Enter or Space to start.</p>
+          <p id="ruleHint" class="rule-hint">Tip: objects fall one tile per tick. Never wait under a falling outline.</p>
+          <ul>
+            <li>Move with Arrow Keys or WASD.</li>
+            <li>Dig dirt by moving into it.</li>
+            <li>Collect 8 crystals to open the exit.</li>
+            <li>Avoid falling rocks and the cave bug.</li>
+            <li>Press R to restart.</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

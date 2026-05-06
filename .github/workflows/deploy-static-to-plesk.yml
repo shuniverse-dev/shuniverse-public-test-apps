@@ -15,7 +15,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      APP_SLUG: public-deploy-console
+      APP_SLUG: crystal-cavern-first-escape
 
     steps:
       - name: Check out repository
