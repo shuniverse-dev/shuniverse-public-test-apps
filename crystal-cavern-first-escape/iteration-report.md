@@ -97,12 +97,15 @@ Result: passed.
 
 Additional checks:
 - Runtime smoke test with a minimal DOM stub passed.
+- Playwright screenshot capture passed after Chromium became available locally.
 - Static feature check confirmed title, board, start/restart controls, relative CSS/JS references, gravity, enemy patrol, rock pushing, level validation, death, and victory functions.
 - Level has 20 columns x 14 rows.
 - Level contains 11 crystals, 8 rocks, 1 enemy, 1 locked exit, and 1 player start.
 
-Browser screenshot verification gap:
-- Playwright was available through `npx`, but the local Chromium browser download timed out, so no local screenshot was captured in this run.
+Browser screenshot verification:
+- Captured local page screenshot with Playwright/Chromium and confirmed the board and start overlay render.
+- Added compact above-board keyboard instructions after screenshot review.
+- Captured a phone-width Chromium screenshot, found narrow viewport board overflow, and tightened the mobile tile sizing.
 
 ## Stop Reason
 
